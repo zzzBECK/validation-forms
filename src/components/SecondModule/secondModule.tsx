@@ -1,80 +1,448 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Checkbox } from "../ui/checkbox";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "../ui/form";
+import { Separator } from "../ui/separator";
 
 const formSchema = z.object({
-    item1: z.string().refine((val) => !isNaN(Number(val)), { message: "Must be a number between 1 and 5" }),
-    item2: z.string().refine((val) => !isNaN(Number(val)), { message: "Must be a number between 1 and 5" }),
-    item3: z.string().refine((val) => !isNaN(Number(val)), { message: "Must be a number between 1 and 5" }),
-    item4: z.string().refine((val) => !isNaN(Number(val)), { message: "Must be a number between 1 and 5" }),
+    item1: z
+        .array(z.string())
+        .nonempty({ message: "Select at least one option" }),
+    item2: z
+        .array(z.string())
+        .nonempty({ message: "Select at least one option" }),
+    item3: z
+        .array(z.string())
+        .nonempty({ message: "Select at least one option" }),
+    item4: z
+        .array(z.string())
+        .nonempty({ message: "Select at least one option" }),
+    item5: z
+        .array(z.string())
+        .nonempty({ message: "Select at least one option" }),
+    item6: z
+        .array(z.string())
+        .nonempty({ message: "Select at least one option" }),
+    item7: z
+        .array(z.string())
+        .nonempty({ message: "Select at least one option" }),
+    item8: z
+        .array(z.string())
+        .nonempty({ message: "Select at least one option" }),
+    item9: z
+        .array(z.string())
+        .nonempty({ message: "Select at least one option" }),
+    item10: z
+        .array(z.string())
+        .nonempty({ message: "Select at least one option" }),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
+const items = {
+    item1: [
+        "1.1- Semanais",
+        "1.2- Quinzenais",
+        "1.3 – Mensais",
+        "1.4 – Semestrais",
+        "1.5 -Não há previsão de cronograma das demandas de formação",
+    ],
+    item2: [
+        "2.1- Encontros semanais",
+        "2.2- Encontros quinzenais",
+        "2.3 -Encontros mensais",
+        "2.4- Encontros semestrais",
+        "2.5 – Não há previsão de encontros presenciais",
+    ],
+    item3: [
+        "3.1- Encontros semanais",
+        "3.2- Encontros quinzenais",
+        "3.3 -Encontros mensais",
+        "3.4- Encontros semestrais",
+        "3.5 – Não há previsão de encontros síncronos",
+    ],
+    item4: [
+        "4.1- Semanal",
+        "4.2-Quinzenal",
+        "4.3- Mensal",
+        "4.4- Semestral",
+        "4.5 – Não há previsão de atividades assíncronas",
+    ],
+    item5: [
+        "5.1-Individual",
+        "5.2-Em grupo",
+        "5.3- Não há previsão de atividades assíncronas",
+    ],
+    item6: [
+        "6.1- Momentos presenciais coletivos",
+        "6.2- Momentos de estudo individual",
+        "6.3- Pesquisa",
+        "6.4- Interação remota",
+        "6.5- A carga horária não especifica a distribuição",
+    ],
+    item7: [
+        "7.1- Atende a carga horária total mínima prevista",
+        "7.2- Atende a carga horária presencial mínima prevista",
+        "7.3- Atende a equivalência prevista da carga horária híbrida",
+    ],
+    item8: [
+        "8.1- Encontros coletivos presenciais no ambiente escolar",
+        "8.2- Encontros coletivos presenciais em outros espaços que favoreçam a interação entre profissionais de diferentes escolas",
+        "8.3 – Não há previsão de encontros coletivos presenciais",
+    ],
+    item9: [
+        "9.1 – Encontros coletivos síncronos entre pares em ambiente virtual",
+        "9.2- Encontros coletivos síncronos que favoreçam a interação entre profissionais de diferentes escolas",
+        "9.3-Não há previsão de encontros coletivos virtuais",
+    ],
+    item10: [
+        "10.1- Os espaços coletivos presenciais atendem os critérios de acessibilidade: arquitetura e de comunicação",
+        "10.2- O ambiente virtual garante o acesso dos profissionais da educação com deficiência às tecnologias",
+        "10.3- Não há previsibilidade de acessibilidade para os encontros coletivos",
+    ],
+};
+
+const calculateScore = (
+    itemName: keyof FormData,
+    selectedOptions: string[]
+) => {
+    switch (itemName) {
+        case "item1":
+            if (
+                selectedOptions.includes(
+                    "1.5 -Não há previsão de cronograma das demandas de formação"
+                )
+            )
+                return 0;
+            if (selectedOptions.includes("1.4 – Semestrais")) return 0.25;
+            if (selectedOptions.includes("1.3 – Mensais")) return 0.5;
+            if (selectedOptions.includes("1.2- Quinzenais")) return 0.75;
+            if (selectedOptions.includes("1.1- Semanais")) return 1;
+            return 0;
+        case "item2":
+            if (
+                selectedOptions.includes(
+                    "2.5 – Não há previsão de encontros presenciais"
+                )
+            )
+                return 0;
+            if (selectedOptions.includes("2.4- Encontros semestrais")) return 0.25;
+            if (selectedOptions.includes("2.3 -Encontros mensais")) return 0.5;
+            if (selectedOptions.includes("2.2- Encontros quinzenais")) return 0.75;
+            if (selectedOptions.includes("2.1- Encontros semanais")) return 1;
+            return 0;
+        case "item3":
+            if (
+                selectedOptions.includes("3.5 – Não há previsão de encontros síncronos")
+            )
+                return 0;
+            if (selectedOptions.includes("3.4- Encontros semestrais")) return 0.25;
+            if (selectedOptions.includes("3.3 -Encontros mensais")) return 0.5;
+            if (selectedOptions.includes("3.2- Encontros quinzenais")) return 0.75;
+            if (selectedOptions.includes("3.1- Encontros semanais")) return 1;
+            return 0;
+        case "item4":
+            if (
+                selectedOptions.includes(
+                    "4.5 – Não há previsão de atividades assíncronas"
+                )
+            )
+                return 0;
+            if (selectedOptions.includes("4.4- Semestral")) return 0.25;
+            if (selectedOptions.includes("4.3- Mensal")) return 0.5;
+            if (selectedOptions.includes("4.2-Quinzenal")) return 0.75;
+            if (selectedOptions.includes("4.1- Semanal")) return 1;
+            return 0;
+        case "item5":
+            if (
+                selectedOptions.includes(
+                    "5.3- Não há previsão de atividades assíncronas"
+                )
+            )
+                return 0;
+            if (selectedOptions.length === 1) return 0.5;
+            if (selectedOptions.length === 2) return 1;
+            return 0;
+        case "item6":
+            if (
+                selectedOptions.includes(
+                    "6.5- A carga horária não especifica a distribuição"
+                )
+            )
+                return 0;
+            if (selectedOptions.length === 1) return 0.25;
+            if (selectedOptions.length === 2) return 0.5;
+            if (selectedOptions.length === 3) return 0.75;
+            if (selectedOptions.length === 4) return 1;
+            return 0;
+        case "item7":
+            if (selectedOptions.length === 0) return 0;
+            if (
+                selectedOptions.includes(
+                    "7.1- Atende a carga horária total mínima prevista"
+                )
+            )
+                return 0.25;
+            if (
+                selectedOptions.includes(
+                    "7.2- Atende a carga horária presencial mínima prevista"
+                )
+            )
+                return 0.5;
+            if (
+                selectedOptions.includes(
+                    "7.3- Atende a equivalência prevista da carga horária híbrida"
+                )
+            )
+                return 0.75;
+            if (selectedOptions.length === 3) return 1;
+            return 0;
+        case "item8":
+            if (
+                selectedOptions.includes(
+                    "8.3 – Não há previsão de encontros coletivos presenciais"
+                )
+            )
+                return 0;
+            if (selectedOptions.length === 1) return 0.75;
+            if (selectedOptions.length === 2) return 1;
+            return 0;
+        case "item9":
+            if (
+                selectedOptions.includes(
+                    "9.3-Não há previsão de encontros coletivos virtuais"
+                )
+            )
+                return 0;
+            if (selectedOptions.length === 1) return 0.75;
+            if (selectedOptions.length === 2) return 1;
+            return 0;
+        case "item10":
+            if (
+                selectedOptions.includes(
+                    "10.3- Não há previsibilidade de acessibilidade para os encontros coletivos"
+                )
+            )
+                return 0;
+            if (selectedOptions.length === 1) return 0.75;
+            if (selectedOptions.length === 2) return 1;
+            return 0;
+        default:
+            return 0;
+    }
+};
+
 export function SecondModule() {
+    const [scoreItem1, setScoreItem1] = useState(0);
+    const [scoreItem2, setScoreItem2] = useState(0);
+    const [scoreItem3, setScoreItem3] = useState(0);
+    const [scoreItem4, setScoreItem4] = useState(0);
+    const [scoreItem5, setScoreItem5] = useState(0);
+    const [scoreItem6, setScoreItem6] = useState(0);
+    const [scoreItem7, setScoreItem7] = useState(0);
+    const [scoreItem8, setScoreItem8] = useState(0);
+    const [scoreItem9, setScoreItem9] = useState(0);
+    const [scoreItem10, setScoreItem10] = useState(0);
+    const [finalResult, setFinalResut] = useState(0);
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            item1: "1",
-            item2: "1",
-            item3: "1",
-            item4: "1",
+            item1: [],
+            item2: [],
+            item3: [],
+            item4: [],
+            item5: [],
+            item6: [],
+            item7: [],
+            item8: [],
+            item9: [],
+            item10: [],
         },
     });
 
-    function onSubmit(values: FormData) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values);
-    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleCheckboxChange = (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        field: any,
+        itemName: keyof FormData,
+        value: string
+    ) => {
+        return (checked: boolean) => {
+            let newValue;
 
+            if (
+                itemName === "item5" &&
+                value === "5.3- Não há previsão de atividades assíncronas"
+            ) {
+                newValue = checked ? [value] : [];
+            } else {
+                newValue = checked
+                    ? [...field.value, value]
+                    : field.value.filter((v: string) => v !== value);
+
+                if (
+                    itemName === "item5" &&
+                    newValue.includes("5.3- Não há previsão de atividades assíncronas")
+                ) {
+                    newValue = ["5.3- Não há previsão de atividades assíncronas"];
+                }
+
+                if (
+                    itemName.includes("item1") ||
+                    itemName.includes("item2") ||
+                    itemName.includes("item3") ||
+                    itemName.includes("item4")
+                ) {
+                    newValue = [value];
+                }
+            }
+
+            field.onChange(newValue);
+
+            const score = calculateScore(itemName, newValue);
+
+            switch (itemName) {
+                case "item1":
+                    setScoreItem1(score);
+                    break;
+                case "item2":
+                    setScoreItem2(score);
+                    break;
+                case "item3":
+                    setScoreItem3(score);
+                    break;
+                case "item4":
+                    setScoreItem4(score);
+                    break;
+                case "item5":
+                    setScoreItem5(score);
+                    break;
+                case "item6":
+                    setScoreItem6(score);
+                    break;
+                case "item7":
+                    setScoreItem7(score);
+                    break;
+                case "item8":
+                    setScoreItem8(score);
+                    break;
+                case "item9":
+                    setScoreItem9(score);
+                    break;
+                case "item10":
+                    setScoreItem10(score);
+                    break;
+                default:
+                    break;
+            }
+        };
+    };
+
+    function onSubmit() {
+        setFinalResut(
+            (
+                scoreItem1 +
+                scoreItem2 +
+                scoreItem3 +
+                scoreItem4 +
+                scoreItem5 +
+                scoreItem6 +
+                scoreItem7 +
+                scoreItem8 +
+                scoreItem9 +
+                scoreItem10
+            ) / 10
+        );
+    }
 
     return (
         <Card>
             <CardHeader />
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col md:flex-row gap-4 items-center">
-                        {(Object.keys(formSchema.shape) as Array<keyof FormData>).map((itemName, index) => (
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="flex flex-col gap-4"
+                    >
+                        {Object.keys(formSchema.shape).map((itemName, index) => (
                             <FormField
                                 key={itemName}
                                 control={form.control}
-                                name={itemName}
+                                name={itemName as keyof FormData}
                                 render={({ field }) => (
-                                    <FormItem className="min-h-[128px] justify-center flex flex-col">
-                                        <FormLabel>Item {index + 1}</FormLabel>
+                                    <FormItem className="justify-center flex flex-col">
+                                        <FormLabel>
+                                            Item {index + 1} - Score:{" "}
+                                            {(() => {
+                                                switch (itemName) {
+                                                    case "item1":
+                                                        return scoreItem1;
+                                                    case "item2":
+                                                        return scoreItem2;
+                                                    case "item3":
+                                                        return scoreItem3;
+                                                    case "item4":
+                                                        return scoreItem4;
+                                                    case "item5":
+                                                        return scoreItem5;
+                                                    case "item6":
+                                                        return scoreItem6;
+                                                    case "item7":
+                                                        return scoreItem7;
+                                                    case "item8":
+                                                        return scoreItem8;
+                                                    case "item9":
+                                                        return scoreItem9;
+                                                    case "item10":
+                                                        return scoreItem10;
+                                                    default:
+                                                        return 0;
+                                                }
+                                            })()}
+                                        </FormLabel>
                                         <FormControl>
-                                            <Select onValueChange={field.onChange} value={field.value} name={field.name}>
-                                                <SelectTrigger>
-                                                    <SelectValue />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {[1, 2, 3, 4, 5].map(value => (
-                                                        <SelectItem key={value} value={value.toString()}>
-                                                            {value}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
+                                            <div className="flex flex-col gap-2">
+                                                {items[itemName as keyof FormData].map((value) => (
+                                                    <label
+                                                        key={value}
+                                                        className="flex items-center space-x-2"
+                                                    >
+                                                        <Checkbox
+                                                            checked={field.value.includes(value)}
+                                                            onCheckedChange={handleCheckboxChange(
+                                                                field,
+                                                                itemName as keyof FormData,
+                                                                value
+                                                            )}
+                                                        />
+                                                        <span>{value}</span>
+                                                    </label>
+                                                ))}
+                                            </div>
                                         </FormControl>
-                                        <FormDescription>
-                                            Select a value for item {index + 1}
-                                        </FormDescription>
+                                        <Separator />
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
                         ))}
-
                         <Button type="submit">Submit</Button>
+                        {finalResult !== 0 && <div>{`Resultado final: ${finalResult}`}</div>}
                     </form>
                 </Form>
             </CardContent>
         </Card>
-    )
+    );
 }
