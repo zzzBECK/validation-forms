@@ -83,15 +83,15 @@ const calculateScore = (itemName: keyof FormData, selectedOptions: string[]) => 
             return 0;
         case 'item5':
             if (selectedOptions.includes("Não se aplica")) return 1;
+            if (selectedOptions.length === 6) return 1;
             if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length === 1 && selectedOptions.includes("5.2- Contempla o bloco de conteúdo Número")) return 0.25;
             if (selectedOptions.includes("5.1- Sinaliza uma proposta pedagógica na perspectiva interdisciplinar") &&
                 selectedOptions.includes("5.2- Contempla o bloco de conteúdo Número") && selectedOptions.length === 2) return 0.5;
             if (selectedOptions.includes("5.1- Sinaliza uma proposta pedagógica na perspectiva interdisciplinar") &&
                 selectedOptions.includes("5.2- Contempla o bloco de conteúdo Número") &&
                 selectedOptions.includes("5.3- Contemplam os blocos de conteúdo: Números, Álgebra, Geometria, Grandezas e Medidas e Probabilidade e Estatística")) return 0.75;
-            if (selectedOptions.length === 6) return 1;
-            return 1; // Não se aplica
+            if (selectedOptions.includes("5.2- Contempla o bloco de conteúdo Número")) return 0.25;
+            return 0;
         case 'item6':
             if (selectedOptions.length === 0) return 0;
             if (selectedOptions.includes("6.3- Sábados")) return 0.25;
