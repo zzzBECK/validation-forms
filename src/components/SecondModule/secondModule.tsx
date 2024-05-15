@@ -16,36 +16,16 @@ import {
 import { Separator } from "../ui/separator";
 
 const formSchema = z.object({
-    item1: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item2: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item3: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item4: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item5: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item6: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item7: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item8: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item9: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item10: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
+    item1: z.array(z.string()),
+    item2: z.array(z.string()),
+    item3: z.array(z.string()),
+    item4: z.array(z.string()),
+    item5: z.array(z.string()),
+    item6: z.array(z.string()),
+    item7: z.array(z.string()),
+    item8: z.array(z.string()),
+    item9: z.array(z.string()),
+    item10: z.array(z.string()),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -352,8 +332,7 @@ export function SecondModule() {
 
     function onSubmit() {
         setFinalResut(
-            (
-                scoreItem1 +
+            (scoreItem1 +
                 scoreItem2 +
                 scoreItem3 +
                 scoreItem4 +
@@ -362,8 +341,8 @@ export function SecondModule() {
                 scoreItem7 +
                 scoreItem8 +
                 scoreItem9 +
-                scoreItem10
-            ) / 10
+                scoreItem10) /
+            10
         );
     }
 
@@ -439,7 +418,9 @@ export function SecondModule() {
                             />
                         ))}
                         <Button type="submit">Submit</Button>
-                        {finalResult !== 0 && <div>{`Resultado final: ${finalResult}`}</div>}
+                        {finalResult !== 0 && (
+                            <div>{`Resultado final: ${finalResult}`}</div>
+                        )}
                     </form>
                 </Form>
             </CardContent>

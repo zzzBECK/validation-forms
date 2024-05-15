@@ -16,27 +16,13 @@ import {
 import { Separator } from "../ui/separator";
 
 const formSchema = z.object({
-    item1: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item2: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item3: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item4: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item5: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item6: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
-    item7: z
-        .array(z.string())
-        .nonempty({ message: "Select at least one option" }),
+    item1: z.array(z.string()),
+    item2: z.array(z.string()),
+    item3: z.array(z.string()),
+    item4: z.array(z.string()),
+    item5: z.array(z.string()),
+    item6: z.array(z.string()),
+    item7: z.array(z.string()),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -220,7 +206,7 @@ export function FirstModule() {
                     newValue = ["Não se aplica"];
                 }
 
-                if (itemName === "item7") {
+                if (itemName.includes("item6") || itemName.includes("item7")) {
                     newValue = [value];
                 }
             }
@@ -259,15 +245,14 @@ export function FirstModule() {
 
     function onSubmit() {
         setFinalResut(
-            (
-                scoreItem1 +
+            (scoreItem1 +
                 scoreItem2 +
                 scoreItem3 +
                 scoreItem4 +
                 scoreItem5 +
                 scoreItem6 +
-                scoreItem7
-            ) / 7
+                scoreItem7) /
+            7
         );
     }
 
@@ -337,7 +322,9 @@ export function FirstModule() {
                             />
                         ))}
                         <Button type="submit">Calcular</Button>
-                        {finalResult !== 0 && <div>{`Resultado final: ${finalResult}`}</div>}
+                        {finalResult !== 0 && (
+                            <div>{`Resultado final: ${finalResult}`}</div>
+                        )}
                     </form>
                 </Form>
             </CardContent>
