@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
-import { Checkbox } from "../ui/checkbox"; // Assumindo que o componente Checkbox esteja disponível
+import { Checkbox } from "../ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Separator } from "../ui/separator";
 
@@ -45,7 +45,8 @@ const items = {
         "5.3- Contemplam os blocos de conteúdo: Números, Álgebra, Geometria, Grandezas e Medidas e Probabilidade e Estatística",
         "5.4- Sinalizam discussões e proposições no âmbito da Educação Especial",
         "5.5 – Sinalizam discussões e proposições no âmbito da Educação do Campo",
-        "5.6 – Sinalizam discussões no âmbito da Educação Indígena"
+        "5.6 – Sinalizam discussões no âmbito da Educação Indígena",
+        "Não se aplica"
     ],
     item6: [
         "6.1- Dentro da carga horária de trabalho",
@@ -81,6 +82,7 @@ const calculateScore = (itemName: keyof FormData, selectedOptions: string[]) => 
             if (selectedOptions.includes("4.2 - Recomposição das aprendizagens (3°, 4° e 5° anos do Ensino Fundamental)")) return 0.5;
             return 0;
         case 'item5':
+            if (selectedOptions.includes("Não se aplica")) return 1;
             if (selectedOptions.length === 0) return 0;
             if (selectedOptions.length === 1 && selectedOptions.includes("5.2- Contempla o bloco de conteúdo Número")) return 0.25;
             if (selectedOptions.includes("5.1- Sinaliza uma proposta pedagógica na perspectiva interdisciplinar") &&
@@ -113,7 +115,7 @@ export function FirstModule() {
     const [scoreItem2, setScoreItem2] = useState(0);
     const [scoreItem3, setScoreItem3] = useState(0);
     const [scoreItem4, setScoreItem4] = useState(0);
-    const [scoreItem5, setScoreItem5] = useState(1); // Default for item5 is "1 - Não se Aplica"
+    const [scoreItem5, setScoreItem5] = useState(0);
     const [scoreItem6, setScoreItem6] = useState(0);
     const [scoreItem7, setScoreItem7] = useState(0);
 
@@ -133,9 +135,20 @@ export function FirstModule() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleCheckboxChange = (field: any, itemName: keyof FormData, value: string) => {
         return (checked: boolean) => {
-            const newValue = checked
-                ? [...field.value, value]
-                : field.value.filter((v: string) => v !== value);
+            let newValue;
+
+            if (itemName === 'item5' && value === 'Não se aplica') {
+                newValue = checked ? [value] : [];
+            } else {
+                newValue = checked
+                    ? [...field.value, value]
+                    : field.value.filter((v: string) => v !== value);
+
+                if (itemName === 'item5' && newValue.includes('Não se aplica')) {
+                    newValue = ['Não se aplica'];
+                }
+            }
+
             field.onChange(newValue);
 
             const score = calculateScore(itemName, newValue);
