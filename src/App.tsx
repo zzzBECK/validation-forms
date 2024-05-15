@@ -1,11 +1,12 @@
+import { Card } from "./components/ui/card"
 
 function App() {
 
   return (
     <>
-      <h1>
+      <Card>
         teste
-      </h1>
+      </Card>
     </>
   )
 }
