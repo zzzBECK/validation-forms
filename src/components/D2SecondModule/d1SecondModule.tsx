@@ -31,66 +31,97 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const items = {
-    item1: [
-        "1.1- Semanais",
-        "1.2- Quinzenais",
-        "1.3 – Mensais",
-        "1.4 – Semestrais",
-        "1.5 -Não há previsão de cronograma das demandas de formação",
-    ],
-    item2: [
-        "2.1- Encontros semanais",
-        "2.2- Encontros quinzenais",
-        "2.3 -Encontros mensais",
-        "2.4- Encontros semestrais",
-        "2.5 – Não há previsão de encontros presenciais",
-    ],
-    item3: [
-        "3.1- Encontros semanais",
-        "3.2- Encontros quinzenais",
-        "3.3 -Encontros mensais",
-        "3.4- Encontros semestrais",
-        "3.5 – Não há previsão de encontros síncronos",
-    ],
-    item4: [
-        "4.1- Semanal",
-        "4.2-Quinzenal",
-        "4.3- Mensal",
-        "4.4- Semestral",
-        "4.5 – Não há previsão de atividades assíncronas",
-    ],
-    item5: [
-        "5.1-Individual",
-        "5.2-Em grupo",
-        "5.3- Não há previsão de atividades assíncronas",
-    ],
-    item6: [
-        "6.1- Momentos presenciais coletivos",
-        "6.2- Momentos de estudo individual",
-        "6.3- Pesquisa",
-        "6.4- Interação remota",
-        "6.5- A carga horária não especifica a distribuição",
-    ],
-    item7: [
-        "7.1- Atende a carga horária total mínima prevista",
-        "7.2- Atende a carga horária presencial mínima prevista",
-        "7.3- Atende a equivalência prevista da carga horária híbrida",
-    ],
-    item8: [
-        "8.1- Encontros coletivos presenciais no ambiente escolar",
-        "8.2- Encontros coletivos presenciais em outros espaços que favoreçam a interação entre profissionais de diferentes escolas",
-        "8.3 – Não há previsão de encontros coletivos presenciais",
-    ],
-    item9: [
-        "9.1 – Encontros coletivos síncronos entre pares em ambiente virtual",
-        "9.2- Encontros coletivos síncronos que favoreçam a interação entre profissionais de diferentes escolas",
-        "9.3-Não há previsão de encontros coletivos virtuais",
-    ],
-    item10: [
-        "10.1- Os espaços coletivos presenciais atendem os critérios de acessibilidade: arquitetura e de comunicação",
-        "10.2- O ambiente virtual garante o acesso dos profissionais da educação com deficiência às tecnologias",
-        "10.3- Não há previsibilidade de acessibilidade para os encontros coletivos",
-    ],
+    item1: {
+        title: "Cronograma das demandas de formação",
+        data: [
+            "1.1- Semanais",
+            "1.2- Quinzenais",
+            "1.3– Mensais",
+            "1.4– Semestrais",
+            "1.5- Não há previsão de cronograma das demandas de formação",
+        ],
+    },
+    item2: {
+        title: "Encontros coletivos presenciais",
+        data: [
+            "2.1- Encontros semanais",
+            "2.2- Encontros quinzenais",
+            "2.3- Encontros mensais",
+            "2.4- Encontros semestrais",
+            "2.5– Não há previsão de encontros presenciais",
+        ],
+    },
+    item3: {
+        title:
+            "Encontros síncronos em plataforma Virtual com mediação de profissional formador",
+        data: [
+            "3.1- Encontros semanais",
+            "3.2- Encontros quinzenais",
+            "3.3- Encontros mensais",
+            "3.4- Encontros semestrais",
+            "3.5– Não há previsão de encontros síncronos",
+        ],
+    },
+    item4: {
+        title: "Cronograma de atividades assíncronas",
+        data: [
+            "4.1- Semanal",
+            "4.2- 0Quinzenal",
+            "4.3- Mensal",
+            "4.4- Semestral",
+            "4.5– Não há previsão de atividades assíncronas",
+        ],
+    },
+    item5: {
+        title: "As atividades virtuais assíncronas contemplam propostas de estudos",
+        data: [
+            "5.1- Individual",
+            "5.2- Em grupo",
+            "5.3- Não há previsão de atividades assíncronas",
+        ],
+    },
+    item6: {
+        title: "A carga horária contempla momentos distintos de formação",
+        data: [
+            "6.1- Momentos presenciais coletivos",
+            "6.2- Momentos de estudo individual",
+            "6.3- Pesquisa",
+            "6.4- Interação remota",
+            "6.5- A carga horária não especifica a distribuição",
+        ],
+    },
+    item7: {
+        title: "Carga horária de referência",
+        data: [
+            "7.1- Atende a carga horária total mínima prevista",
+            "7.2- Atende a carga horária presencial mínima prevista",
+            "7.3- Atende a equivalência prevista da carga horária híbrida",
+        ],
+    },
+    item8: {
+        title: "Encontros coletivos presenciais",
+        data: [
+            "8.1- Encontros coletivos presenciais no ambiente escolar",
+            "8.2- Encontros coletivos presenciais em outros espaços que favoreçam a interação entre profissionais de diferentes escolas",
+            "8.3– Não há previsão de encontros coletivos presenciais",
+        ],
+    },
+    item9: {
+        title: "Encontros coletivos virtuais",
+        data: [
+            "9.1– Encontros coletivos síncronos entre pares em ambiente virtual",
+            "9.2- Encontros coletivos síncronos que favoreçam a interação entre profissionais de diferentes escolas",
+            "9.3- Não há previsão de encontros coletivos virtuais",
+        ],
+    },
+    item10: {
+        title: "Previsibilidade de acessibilidade nos encontros coletivos",
+        data: [
+            "10.1- Os espaços coletivos presenciais atendem os critérios de acessibilidade: arquitetura e de comunicação",
+            "10.2- O ambiente virtual garante o acesso dos profissionais da educação com deficiência às tecnologias",
+            "10.3- Não há previsibilidade de acessibilidade para os encontros coletivos",
+        ],
+    },
 };
 
 const calculateScore = (
@@ -101,7 +132,7 @@ const calculateScore = (
         case "item1":
             if (
                 selectedOptions.includes(
-                    "1.5 -Não há previsão de cronograma das demandas de formação"
+                    "1.5- Não há previsão de cronograma das demandas de formação"
                 )
             )
                 return 0;
@@ -113,7 +144,7 @@ const calculateScore = (
         case "item2":
             if (
                 selectedOptions.includes(
-                    "2.5 – Não há previsão de encontros presenciais"
+                    "2.5– Não há previsão de encontros presenciais"
                 )
             )
                 return 0;
@@ -124,7 +155,7 @@ const calculateScore = (
             return 0;
         case "item3":
             if (
-                selectedOptions.includes("3.5 – Não há previsão de encontros síncronos")
+                selectedOptions.includes("3.5– Não há previsão de encontros síncronos")
             )
                 return 0;
             if (selectedOptions.includes("3.4- Encontros semestrais")) return 0.25;
@@ -135,7 +166,7 @@ const calculateScore = (
         case "item4":
             if (
                 selectedOptions.includes(
-                    "4.5 – Não há previsão de atividades assíncronas"
+                    "4.5– Não há previsão de atividades assíncronas"
                 )
             )
                 return 0;
@@ -168,12 +199,14 @@ const calculateScore = (
             return 0;
         case "item7":
             if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.length === 3) return 1;
             if (
                 selectedOptions.includes(
-                    "7.1- Atende a carga horária total mínima prevista"
+                    "7.3- Atende a equivalência prevista da carga horária híbrida"
                 )
             )
-                return 0.25;
+                return 0.75;
+
             if (
                 selectedOptions.includes(
                     "7.2- Atende a carga horária presencial mínima prevista"
@@ -182,16 +215,15 @@ const calculateScore = (
                 return 0.5;
             if (
                 selectedOptions.includes(
-                    "7.3- Atende a equivalência prevista da carga horária híbrida"
+                    "7.1- Atende a carga horária total mínima prevista"
                 )
             )
-                return 0.75;
-            if (selectedOptions.length === 3) return 1;
+                return 0.25;
             return 0;
         case "item8":
             if (
                 selectedOptions.includes(
-                    "8.3 – Não há previsão de encontros coletivos presenciais"
+                    "8.3– Não há previsão de encontros coletivos presenciais"
                 )
             )
                 return 0;
@@ -201,7 +233,7 @@ const calculateScore = (
         case "item9":
             if (
                 selectedOptions.includes(
-                    "9.3-Não há previsão de encontros coletivos virtuais"
+                    "9.3- Não há previsão de encontros coletivos virtuais"
                 )
             )
                 return 0;
@@ -223,7 +255,7 @@ const calculateScore = (
     }
 };
 
-export function SecondModule() {
+export function D2SecondModule() {
     const [scoreItem1, setScoreItem1] = useState(0);
     const [scoreItem2, setScoreItem2] = useState(0);
     const [scoreItem3, setScoreItem3] = useState(0);
@@ -263,8 +295,21 @@ export function SecondModule() {
             let newValue;
 
             if (
-                itemName === "item5" &&
-                value === "5.3- Não há previsão de atividades assíncronas"
+                (itemName === "item5" &&
+                    value === "5.3- Não há previsão de atividades assíncronas") ||
+                (itemName === "item6" &&
+                    value === "6.5- A carga horária não especifica a distribuição") ||
+                (itemName === "item8" &&
+                    value ===
+                    "8.3– Não há previsão de encontros coletivos presenciais") ||
+                (itemName === "item9" &&
+                    value === "9.3- Não há previsão de encontros coletivos virtuais") ||
+                (itemName === "item10" &&
+                    value === "10.3- Não há previsibilidade de acessibilidade para os encontros coletivos") ||
+                itemName === "item1" ||
+                itemName === "item2" ||
+                itemName === "item3" ||
+                itemName === "item4"
             ) {
                 newValue = checked ? [value] : [];
             } else {
@@ -280,12 +325,41 @@ export function SecondModule() {
                 }
 
                 if (
-                    itemName.includes("item1") ||
-                    itemName.includes("item2") ||
-                    itemName.includes("item3") ||
-                    itemName.includes("item4")
+                    itemName === "item6" &&
+                    newValue.includes(
+                        "6.5- A carga horária não especifica a distribuição"
+                    )
                 ) {
-                    newValue = [value];
+                    newValue = ["6.5- A carga horária não especifica a distribuição"];
+                }
+
+                if (
+                    itemName === "item8" &&
+                    newValue.includes(
+                        "8.3– Não há previsão de encontros coletivos presenciais"
+                    )
+                ) {
+                    newValue = [
+                        "8.3– Não há previsão de encontros coletivos presenciais",
+                    ];
+                }
+
+                if (
+                    itemName === "item9" &&
+                    newValue.includes(
+                        "9.3- Não há previsão de encontros coletivos virtuais"
+                    )
+                ) {
+                    newValue = ["9.3- Não há previsão de encontros coletivos virtuais"];
+                }
+
+                if (
+                    itemName === "item10" &&
+                    newValue.includes(
+                        "10.3- Não há previsibilidade de acessibilidade para os encontros coletivos"
+                    )
+                ) {
+                    newValue = ["10.3- Não há previsibilidade de acessibilidade para os encontros coletivos"];
                 }
             }
 
@@ -355,7 +429,7 @@ export function SecondModule() {
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="flex flex-col gap-4"
                     >
-                        {Object.keys(formSchema.shape).map((itemName, index) => (
+                        {Object.keys(formSchema.shape).map((itemName) => (
                             <FormField
                                 key={itemName}
                                 control={form.control}
@@ -363,7 +437,7 @@ export function SecondModule() {
                                 render={({ field }) => (
                                     <FormItem className="justify-center flex flex-col">
                                         <FormLabel>
-                                            Item {index + 1} - Score:{" "}
+                                            {items[itemName as keyof FormData].title} - Score:{" "}
                                             {(() => {
                                                 switch (itemName) {
                                                     case "item1":
@@ -393,7 +467,7 @@ export function SecondModule() {
                                         </FormLabel>
                                         <FormControl>
                                             <div className="flex flex-col gap-2">
-                                                {items[itemName as keyof FormData].map((value) => (
+                                                {items[itemName as keyof FormData].data.map((value) => (
                                                     <label
                                                         key={value}
                                                         className="flex items-center space-x-2"
@@ -417,7 +491,7 @@ export function SecondModule() {
                                 )}
                             />
                         ))}
-                        <Button type="submit">Submit</Button>
+                        <Button type="submit">Calcular</Button>
                         {finalResult !== 0 && (
                             <div>{`Resultado final: ${finalResult}`}</div>
                         )}

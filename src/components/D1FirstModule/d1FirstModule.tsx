@@ -28,45 +28,68 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const items = {
-    item1: [
-        "1.1- Docentes",
-        "1.2- Coordenadores Pedagógicos",
-        "1.3 -Gestores",
-        "1.4- Equipes Técnicas",
-        "1.5- Famílias dos Estudantes",
-        "1.6 - Suportes Administrativos",
-    ],
-    item2: [
-        "2.1- Levantamento e mapeamento dos profissionais da educação com deficiência e Transtorno do Espectro Autista",
-    ],
-    item3: [
-        "3.1- Levantamento e mapeamento dos profissionais da educação que atuam em Escolas do Campo, Educação Bilíngue, Escolas Indígenas, Educação Especial",
-    ],
-    item4: [
-        "4.1- Processo de alfabetização (1° e 2° anos do Ensino Fundamental)",
-        "4.2 - Recomposição das aprendizagens (3°, 4° e 5° anos do Ensino Fundamental)",
-    ],
-    item5: [
-        "5.1- Sinaliza uma proposta pedagógica na perspectiva interdisciplinar",
-        "5.2- Contempla o bloco de conteúdo Número",
-        "5.3- Contemplam os blocos de conteúdo: Números, Álgebra, Geometria, Grandezas e Medidas e Probabilidade e Estatística",
-        "5.4- Sinalizam discussões e proposições no âmbito da Educação Especial",
-        "5.5 – Sinalizam discussões e proposições no âmbito da Educação do Campo",
-        "5.6 – Sinalizam discussões no âmbito da Educação Indígena",
-        "Não se aplica",
-    ],
-    item6: [
-        "6.1- Dentro da carga horária de trabalho",
-        "6.2- Dentro de 1/3 da carga horária (coordenações, hora de atividades, planejamentos e reuniões)",
-        "6.3- Sábados",
-        "6.4 – Contraturno (para além da carga horária)",
-    ],
-    item7: [
-        "7.1- 100%",
-        "7.2- Entre 80 a 99%",
-        "7.3- Entre 60 a 79%",
-        "7.4 - Até 59%",
-    ],
+    item1: {
+        title: "Profissionais da educação",
+        data: [
+            "1.1- Docentes",
+            "1.2- Coordenadores Pedagógicos",
+            "1.3 -Gestores",
+            "1.4- Equipes Técnicas",
+            "1.5- Famílias dos Estudantes",
+            "1.6 - Suportes Administrativos",
+        ],
+    },
+    item2: {
+        title:
+            "Previsibilidade para a garantia de organização estrutural acessível",
+        data: [
+            "2.1- Levantamento e mapeamento dos profissionais da educação com deficiência e Transtorno do Espectro Autista",
+        ],
+    },
+    item3: {
+        title:
+            "Previsibilidade para a garantia de organização estrutural que atenda a diversidade",
+        data: [
+            "3.1- Levantamento e mapeamento dos profissionais da educação que atuam em Escolas do Campo, Educação Bilíngue, Escolas Indígenas, Educação Especial",
+        ],
+    },
+    item4: {
+        title: "Demandas de formação",
+        data: [
+            "4.1- Processo de alfabetização (1° e 2° anos do Ensino Fundamental)",
+            "4.2 - Recomposição das aprendizagens (3°, 4° e 5° anos do Ensino Fundamental)",
+        ],
+    },
+    item5: {
+        title: "Contempla a alfabetização Matemática",
+        data: [
+            "5.1- Sinaliza uma proposta pedagógica na perspectiva interdisciplinar",
+            "5.2- Contempla o bloco de conteúdo Número",
+            "5.3- Contemplam os blocos de conteúdo: Números, Álgebra, Geometria, Grandezas e Medidas e Probabilidade e Estatística",
+            "5.4- Sinalizam discussões e proposições no âmbito da Educação Especial",
+            "5.5 – Sinalizam discussões e proposições no âmbito da Educação do Campo",
+            "5.6 – Sinalizam discussões no âmbito da Educação Indígena",
+            "Não se aplica",
+        ],
+    },
+    item6: {
+        title: "Turno de formação",
+        data: [
+            "6.1- Dentro da carga horária de trabalho",
+            "6.2- Dentro de 1/3 da carga horária (coordenações, hora de atividades, planejamentos e reuniões)",
+            "6.3- Sábados",
+            "6.4 – Contraturno (para além da carga horária)",
+        ],
+    },
+    item7: {
+        title: "Alcance dos profissionais da educação inscritos nas formações",
+        data: [
+            "7.1- 100%",
+            "7.2- Entre 80 a 99%",
+            "7.3- Entre 60 a 79%",
+            "7.4 - Até 59%",
+        ],
+    },
 };
 
 const calculateScore = (
@@ -162,7 +185,7 @@ const calculateScore = (
     }
 };
 
-export function FirstModule() {
+export function D1FirstModule() {
     const [scoreItem1, setScoreItem1] = useState(0);
     const [scoreItem2, setScoreItem2] = useState(0);
     const [scoreItem3, setScoreItem3] = useState(0);
@@ -265,15 +288,15 @@ export function FirstModule() {
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="flex flex-col gap-4"
                     >
-                        {Object.keys(formSchema.shape).map((itemName, index) => (
+                        {Object.keys(formSchema.shape).map((itemName) => (
                             <FormField
-                                key={itemName}
+                                key={items[itemName as keyof FormData].title}
                                 control={form.control}
                                 name={itemName as keyof FormData}
                                 render={({ field }) => (
                                     <FormItem className="justify-center flex flex-col">
                                         <FormLabel>
-                                            Item {index + 1} - Score:{" "}
+                                            {items[itemName as keyof FormData].title} - Score:{" "}
                                             {(() => {
                                                 switch (itemName) {
                                                     case "item1":
@@ -297,9 +320,9 @@ export function FirstModule() {
                                         </FormLabel>
                                         <FormControl>
                                             <div className="flex flex-col gap-2">
-                                                {items[itemName as keyof FormData].map((value) => (
+                                                {items[itemName as keyof FormData].data.map((value, idx) => (
                                                     <label
-                                                        key={value}
+                                                        key={idx}
                                                         className="flex items-center space-x-2"
                                                     >
                                                         <Checkbox
