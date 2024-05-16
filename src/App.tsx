@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { D1FirstModule } from "./components/D1FirstModule/d1FirstModule";
-import { D2SecondModule } from "./components/D2SecondModule/d1SecondModule";
+import { D2SecondModule } from "./components/D1SecondModule/d1SecondModule";
+import { D2FirstModule } from "./components/D2FirstModule/d2FirstModule";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 
@@ -23,16 +24,16 @@ function App() {
       </Select>
 
       {dimension === "d1" &&
-        <Tabs defaultValue="firstModule" className="w-full pt-10">
+        <Tabs defaultValue="d1FirstModule" className="w-full pt-10">
           <TabsList className="flex gap-4 w-full">
-            <TabsTrigger className="w-full" value="d2FirstModule">
+            <TabsTrigger className="w-full" value="d1FirstModule">
               D1 - CATEGORIA 1
             </TabsTrigger>
             <TabsTrigger className="w-full" value="d1SecondModule">
               D1 - CATEGORIA 2
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="d2FirstModule">
+          <TabsContent value="d1FirstModule">
             <D1FirstModule />
           </TabsContent>
           <TabsContent value="d1SecondModule">
@@ -41,7 +42,7 @@ function App() {
         </Tabs>}
 
       {dimension === "d2" &&
-        <Tabs defaultValue="firstModule" className="w-full h-fit pt-10">
+        <Tabs defaultValue="d2FirstModule" className="w-full h-fit pt-10">
           <TabsList className="flex flex-col md:flex-row gap-4 w-full">
             <TabsTrigger className="w-full" value="d2FirstModule">
               D2 - CATEGORIA 1
@@ -57,7 +58,7 @@ function App() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="d2FirstModule">
-            <D1FirstModule />
+            <D2FirstModule />
           </TabsContent>
         </Tabs>}
 
