@@ -1,9 +1,12 @@
 import { formatValue } from "@/helpers/formatValue";
 import { zodResolver } from "@hookform/resolvers/zod";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useTheme } from "../theme-provider";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
@@ -198,6 +201,9 @@ export function D1FirstModule() {
     const [scoreItem7, setScoreItem7] = useState(0);
     const [finalResult, setFinalResut] = useState(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isDownloading, setIsDownloading] = useState<boolean>(false);
+    const pdfRef = useRef<HTMLFormElement>(null);
+    const { theme, setTheme } = useTheme();
 
     const savedFormData = JSON.parse(localStorage.getItem("d1m1") || "{}");
 
@@ -307,6 +313,51 @@ export function D1FirstModule() {
         }, 2000);
     }
 
+    const downloadPDF = async () => {
+        setIsDownloading(true);
+        const originalTheme = theme;
+        setTheme("light");
+        if (pdfRef.current) {
+            setTimeout(async () => {
+                const canvas = await html2canvas(pdfRef.current as HTMLFormElement);
+                const imgData = canvas.toDataURL("image/png");
+                const pdf = new jsPDF();
+                const imgProps = pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+
+                // Defina o padding desejado em pontos, por exemplo, 20 pontos
+                const padding = 10;
+                const availableWidth = pdfWidth - 2 * padding; // Largura disponível ajustada pelo padding
+                const availableHeight = pdfHeight - 2 * padding; // Altura disponível ajustada pelo padding
+
+                // Cálculo para escalar a imagem proporcionalmente dentro das dimensões disponíveis
+                const imgRatio = imgProps.width / imgProps.height;
+                let finalImgHeight;
+
+                if (availableWidth / availableHeight > imgRatio) {
+                    // A imagem é relativamente mais alta do que a área disponível
+                    finalImgHeight = availableHeight;
+                } else {
+                    finalImgHeight = availableWidth / imgRatio;
+                }
+
+                // Adiciona a imagem com padding à esquerda e ao topo
+                pdf.addImage(
+                    imgData,
+                    "PNG",
+                    padding,
+                    padding,
+                    availableWidth,
+                    finalImgHeight
+                );
+                pdf.save("dimensao1-categoria1.pdf");
+                setTheme(originalTheme);
+                setIsDownloading(false);
+            }, 1000);
+        }
+    };
+
     return (
         <Card>
             <CardHeader />
@@ -315,6 +366,7 @@ export function D1FirstModule() {
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="flex flex-col gap-4"
+                        ref={pdfRef}
                     >
                         {Object.keys(formSchema.shape).map((itemName) => (
                             <FormField
@@ -392,6 +444,7 @@ export function D1FirstModule() {
                                 <Skeleton className="w-1/6 h-8" />
                                 <Skeleton className="w-1/6 h-8" />
                                 <Skeleton className="w-2/6 h-8" />
+                                <Skeleton className="w-full h-10" />
                             </div>
                         ) : (
                             finalResult !== 0 && (
@@ -437,6 +490,16 @@ export function D1FirstModule() {
                                             decimalPlace: 2,
                                         })}`}
                                     </div>
+                                    {isDownloading ? (
+                                        <Button disabled>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            Baixando
+                                        </Button>
+                                    ) : (
+                                        <Button type="button" onClick={downloadPDF}>
+                                            Baixar PDF
+                                        </Button>
+                                    )}
                                 </>
                             )
                         )}
