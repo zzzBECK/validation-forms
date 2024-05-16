@@ -216,6 +216,17 @@ export function D1FirstModule() {
         });
     }, [form, form.watch]);
 
+    useEffect(() => {
+        const { item1, item2, item3, item4, item5, item6, item7 } = savedFormData;
+        setScoreItem1(calculateScore("item1", item1 || []));
+        setScoreItem2(calculateScore("item2", item2 || []));
+        setScoreItem3(calculateScore("item3", item3 || []));
+        setScoreItem4(calculateScore("item4", item4 || []));
+        setScoreItem5(calculateScore("item5", item5 || []));
+        setScoreItem6(calculateScore("item6", item6 || []));
+        setScoreItem7(calculateScore("item7", item7 || []));
+    }, [savedFormData]);
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleCheckboxChange = (
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
