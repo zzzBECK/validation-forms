@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
@@ -136,8 +136,8 @@ const calculateScore = (
                 )
             )
                 return 0;
-            if (selectedOptions.includes("1.4 – Semestrais")) return 0.25;
-            if (selectedOptions.includes("1.3 – Mensais")) return 0.5;
+            if (selectedOptions.includes("1.4– Semestrais")) return 0.25;
+            if (selectedOptions.includes("1.3– Mensais")) return 0.5;
             if (selectedOptions.includes("1.2- Quinzenais")) return 0.75;
             if (selectedOptions.includes("1.1- Semanais")) return 1;
             return 0;
@@ -149,7 +149,7 @@ const calculateScore = (
             )
                 return 0;
             if (selectedOptions.includes("2.4- Encontros semestrais")) return 0.25;
-            if (selectedOptions.includes("2.3 -Encontros mensais")) return 0.5;
+            if (selectedOptions.includes("2.3- Encontros mensais")) return 0.5;
             if (selectedOptions.includes("2.2- Encontros quinzenais")) return 0.75;
             if (selectedOptions.includes("2.1- Encontros semanais")) return 1;
             return 0;
@@ -159,7 +159,7 @@ const calculateScore = (
             )
                 return 0;
             if (selectedOptions.includes("3.4- Encontros semestrais")) return 0.25;
-            if (selectedOptions.includes("3.3 -Encontros mensais")) return 0.5;
+            if (selectedOptions.includes("3.3- Encontros mensais")) return 0.5;
             if (selectedOptions.includes("3.2- Encontros quinzenais")) return 0.75;
             if (selectedOptions.includes("3.1- Encontros semanais")) return 1;
             return 0;
@@ -172,7 +172,7 @@ const calculateScore = (
                 return 0;
             if (selectedOptions.includes("4.4- Semestral")) return 0.25;
             if (selectedOptions.includes("4.3- Mensal")) return 0.5;
-            if (selectedOptions.includes("4.2-Quinzenal")) return 0.75;
+            if (selectedOptions.includes("4.2- Quinzenal")) return 0.75;
             if (selectedOptions.includes("4.1- Semanal")) return 1;
             return 0;
         case "item5":
@@ -268,21 +268,29 @@ export function D2SecondModule() {
     const [scoreItem10, setScoreItem10] = useState(0);
     const [finalResult, setFinalResut] = useState(0);
 
+    const savedFormData = JSON.parse(localStorage.getItem("formData") || "{}");
+
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            item1: [],
-            item2: [],
-            item3: [],
-            item4: [],
-            item5: [],
-            item6: [],
-            item7: [],
-            item8: [],
-            item9: [],
-            item10: [],
+            item1: savedFormData.item1 || [],
+            item2: savedFormData.item2 || [],
+            item3: savedFormData.item3 || [],
+            item4: savedFormData.item4 || [],
+            item5: savedFormData.item5 || [],
+            item6: savedFormData.item6 || [],
+            item7: savedFormData.item7 || [],
+            item8: savedFormData.item8 || [],
+            item9: savedFormData.item9 || [],
+            item10: savedFormData.item10 || [],
         },
     });
+
+    useEffect(() => {
+        form.watch((value) => {
+            localStorage.setItem("formData", JSON.stringify(value));
+        });
+    }, [form, form.watch]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleCheckboxChange = (
