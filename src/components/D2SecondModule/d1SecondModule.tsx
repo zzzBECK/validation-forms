@@ -268,7 +268,7 @@ export function D2SecondModule() {
     const [scoreItem10, setScoreItem10] = useState(0);
     const [finalResult, setFinalResut] = useState(0);
 
-    const savedFormData = JSON.parse(localStorage.getItem("formData") || "{}");
+    const savedFormData = JSON.parse(localStorage.getItem("d1m2") || "{}");
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -288,7 +288,7 @@ export function D2SecondModule() {
 
     useEffect(() => {
         form.watch((value) => {
-            localStorage.setItem("formData", JSON.stringify(value));
+            localStorage.setItem("d1m2", JSON.stringify(value));
         });
     }, [form, form.watch]);
 

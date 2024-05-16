@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
@@ -36,7 +36,7 @@ const items = {
             "1.3 -Gestores",
             "1.4- Equipes Técnicas",
             "1.5- Famílias dos Estudantes",
-            "1.6 - Suportes Administrativos",
+            "1.6- Suportes Administrativos",
         ],
     },
     item2: {
@@ -57,7 +57,7 @@ const items = {
         title: "Demandas de formação",
         data: [
             "4.1- Processo de alfabetização (1° e 2° anos do Ensino Fundamental)",
-            "4.2 - Recomposição das aprendizagens (3°, 4° e 5° anos do Ensino Fundamental)",
+            "4.2- Recomposição das aprendizagens (3°, 4° e 5° anos do Ensino Fundamental)",
         ],
     },
     item5: {
@@ -67,8 +67,8 @@ const items = {
             "5.2- Contempla o bloco de conteúdo Número",
             "5.3- Contemplam os blocos de conteúdo: Números, Álgebra, Geometria, Grandezas e Medidas e Probabilidade e Estatística",
             "5.4- Sinalizam discussões e proposições no âmbito da Educação Especial",
-            "5.5 – Sinalizam discussões e proposições no âmbito da Educação do Campo",
-            "5.6 – Sinalizam discussões no âmbito da Educação Indígena",
+            "5.5– Sinalizam discussões e proposições no âmbito da Educação do Campo",
+            "5.6– Sinalizam discussões no âmbito da Educação Indígena",
             "Não se aplica",
         ],
     },
@@ -78,7 +78,7 @@ const items = {
             "6.1- Dentro da carga horária de trabalho",
             "6.2- Dentro de 1/3 da carga horária (coordenações, hora de atividades, planejamentos e reuniões)",
             "6.3- Sábados",
-            "6.4 – Contraturno (para além da carga horária)",
+            "6.4– Contraturno (para além da carga horária)",
         ],
     },
     item7: {
@@ -87,7 +87,7 @@ const items = {
             "7.1- 100%",
             "7.2- Entre 80 a 99%",
             "7.3- Entre 60 a 79%",
-            "7.4 - Até 59%",
+            "7.4- Até 59%",
         ],
     },
 };
@@ -114,7 +114,7 @@ const calculateScore = (
                     "4.1- Processo de alfabetização (1° e 2° anos do Ensino Fundamental)"
                 ) &&
                 selectedOptions.includes(
-                    "4.2 - Recomposição das aprendizagens (3°, 4° e 5° anos do Ensino Fundamental)"
+                    "4.2- Recomposição das aprendizagens (3°, 4° e 5° anos do Ensino Fundamental)"
                 )
             )
                 return 1;
@@ -126,7 +126,7 @@ const calculateScore = (
                 return 0.75;
             if (
                 selectedOptions.includes(
-                    "4.2 - Recomposição das aprendizagens (3°, 4° e 5° anos do Ensino Fundamental)"
+                    "4.2- Recomposição das aprendizagens (3°, 4° e 5° anos do Ensino Fundamental)"
                 )
             )
                 return 0.5;
@@ -161,7 +161,7 @@ const calculateScore = (
             if (selectedOptions.includes("6.3- Sábados")) return 0.25;
             if (
                 selectedOptions.includes(
-                    "6.4 – Contraturno (para além da carga horária)"
+                    "6.4– Contraturno (para além da carga horária)"
                 )
             )
                 return 0.5;
@@ -178,7 +178,7 @@ const calculateScore = (
             if (selectedOptions.includes("7.1- 100%")) return 1;
             if (selectedOptions.includes("7.2- Entre 80 a 99%")) return 0.75;
             if (selectedOptions.includes("7.3- Entre 60 a 79%")) return 0.5;
-            if (selectedOptions.includes("7.4 - Até 59%")) return 0.25;
+            if (selectedOptions.includes("7.4- Até 59%")) return 0.25;
             return 0;
         default:
             return 0;
@@ -195,18 +195,26 @@ export function D1FirstModule() {
     const [scoreItem7, setScoreItem7] = useState(0);
     const [finalResult, setFinalResut] = useState(0);
 
+    const savedFormData = JSON.parse(localStorage.getItem("d1m1") || "{}");
+
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            item1: [],
-            item2: [],
-            item3: [],
-            item4: [],
-            item5: [],
-            item6: [],
-            item7: [],
+            item1: savedFormData.item1 || [],
+            item2: savedFormData.item2 || [],
+            item3: savedFormData.item3 || [],
+            item4: savedFormData.item4 || [],
+            item5: savedFormData.item5 || [],
+            item6: savedFormData.item6 || [],
+            item7: savedFormData.item7 || [],
         },
     });
+
+    useEffect(() => {
+        form.watch((value) => {
+            localStorage.setItem("d1m1", JSON.stringify(value));
+        });
+    }, [form, form.watch]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleCheckboxChange = (
