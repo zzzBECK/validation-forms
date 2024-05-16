@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
@@ -14,6 +13,7 @@ import {
     FormMessage,
 } from "../ui/form";
 import { Separator } from "../ui/separator";
+import { useD1Module } from "../useModule";
 
 const formSchema = z.object({
     item1: z.array(z.string()),
@@ -136,8 +136,8 @@ const calculateScore = (
                 )
             )
                 return 0;
-            if (selectedOptions.includes("1.4 – Semestrais")) return 0.25;
-            if (selectedOptions.includes("1.3 – Mensais")) return 0.5;
+            if (selectedOptions.includes("1.4– Semestrais")) return 0.25;
+            if (selectedOptions.includes("1.3– Mensais")) return 0.5;
             if (selectedOptions.includes("1.2- Quinzenais")) return 0.75;
             if (selectedOptions.includes("1.1- Semanais")) return 1;
             return 0;
@@ -149,7 +149,7 @@ const calculateScore = (
             )
                 return 0;
             if (selectedOptions.includes("2.4- Encontros semestrais")) return 0.25;
-            if (selectedOptions.includes("2.3 -Encontros mensais")) return 0.5;
+            if (selectedOptions.includes("2.3- Encontros mensais")) return 0.5;
             if (selectedOptions.includes("2.2- Encontros quinzenais")) return 0.75;
             if (selectedOptions.includes("2.1- Encontros semanais")) return 1;
             return 0;
@@ -256,17 +256,32 @@ const calculateScore = (
 };
 
 export function D2SecondModule() {
-    const [scoreItem1, setScoreItem1] = useState(0);
-    const [scoreItem2, setScoreItem2] = useState(0);
-    const [scoreItem3, setScoreItem3] = useState(0);
-    const [scoreItem4, setScoreItem4] = useState(0);
-    const [scoreItem5, setScoreItem5] = useState(0);
-    const [scoreItem6, setScoreItem6] = useState(0);
-    const [scoreItem7, setScoreItem7] = useState(0);
-    const [scoreItem8, setScoreItem8] = useState(0);
-    const [scoreItem9, setScoreItem9] = useState(0);
-    const [scoreItem10, setScoreItem10] = useState(0);
-    const [finalResult, setFinalResut] = useState(0);
+
+    const {
+        m2ScoreItem1,
+        m2SetScoreItem1,
+        m2ScoreItem2,
+        m2SetScoreItem2,
+        m2ScoreItem3,
+        m2SetScoreItem3,
+        m2ScoreItem4,
+        m2SetScoreItem4,
+        m2ScoreItem5,
+        m2SetScoreItem5,
+        m2ScoreItem6,
+        m2SetScoreItem6,
+        m2ScoreItem7,
+        m2SetScoreItem7,
+        m2ScoreItem8,
+        m2SetScoreItem8,
+        m2ScoreItem9,
+        m2SetScoreItem9,
+        m2ScoreItem10,
+        m2SetScoreItem10,
+        m2FinalResult,
+        m2SetFinalResult
+
+    } = useD1Module();
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -369,34 +384,34 @@ export function D2SecondModule() {
 
             switch (itemName) {
                 case "item1":
-                    setScoreItem1(score);
+                    m2SetScoreItem1(score);
                     break;
                 case "item2":
-                    setScoreItem2(score);
+                    m2SetScoreItem2(score);
                     break;
                 case "item3":
-                    setScoreItem3(score);
+                    m2SetScoreItem3(score);
                     break;
                 case "item4":
-                    setScoreItem4(score);
+                    m2SetScoreItem4(score);
                     break;
                 case "item5":
-                    setScoreItem5(score);
+                    m2SetScoreItem5(score);
                     break;
                 case "item6":
-                    setScoreItem6(score);
+                    m2SetScoreItem6(score);
                     break;
                 case "item7":
-                    setScoreItem7(score);
+                    m2SetScoreItem7(score);
                     break;
                 case "item8":
-                    setScoreItem8(score);
+                    m2SetScoreItem8(score);
                     break;
                 case "item9":
-                    setScoreItem9(score);
+                    m2SetScoreItem9(score);
                     break;
                 case "item10":
-                    setScoreItem10(score);
+                    m2SetScoreItem10(score);
                     break;
                 default:
                     break;
@@ -405,17 +420,18 @@ export function D2SecondModule() {
     };
 
     function onSubmit() {
-        setFinalResut(
-            (scoreItem1 +
-                scoreItem2 +
-                scoreItem3 +
-                scoreItem4 +
-                scoreItem5 +
-                scoreItem6 +
-                scoreItem7 +
-                scoreItem8 +
-                scoreItem9 +
-                scoreItem10) /
+        m2SetFinalResult(
+            (
+                m2ScoreItem1 +
+                m2ScoreItem2 +
+                m2ScoreItem3 +
+                m2ScoreItem4 +
+                m2ScoreItem5 +
+                m2ScoreItem6 +
+                m2ScoreItem7 +
+                m2ScoreItem8 +
+                m2ScoreItem9 +
+                m2ScoreItem10) /
             10
         );
     }
@@ -441,25 +457,25 @@ export function D2SecondModule() {
                                             {(() => {
                                                 switch (itemName) {
                                                     case "item1":
-                                                        return scoreItem1;
+                                                        return m2ScoreItem1;
                                                     case "item2":
-                                                        return scoreItem2;
+                                                        return m2ScoreItem2;
                                                     case "item3":
-                                                        return scoreItem3;
+                                                        return m2ScoreItem3;
                                                     case "item4":
-                                                        return scoreItem4;
+                                                        return m2ScoreItem4;
                                                     case "item5":
-                                                        return scoreItem5;
+                                                        return m2ScoreItem5;
                                                     case "item6":
-                                                        return scoreItem6;
+                                                        return m2ScoreItem6;
                                                     case "item7":
-                                                        return scoreItem7;
+                                                        return m2ScoreItem7;
                                                     case "item8":
-                                                        return scoreItem8;
+                                                        return m2ScoreItem8;
                                                     case "item9":
-                                                        return scoreItem9;
+                                                        return m2ScoreItem9;
                                                     case "item10":
-                                                        return scoreItem10;
+                                                        return m2ScoreItem10;
                                                     default:
                                                         return 0;
                                                 }
@@ -492,8 +508,8 @@ export function D2SecondModule() {
                             />
                         ))}
                         <Button type="submit">Calcular</Button>
-                        {finalResult !== 0 && (
-                            <div>{`Resultado final: ${finalResult}`}</div>
+                        {m2FinalResult !== 0 && (
+                            <div>{`Resultado final: ${m2FinalResult}`}</div>
                         )}
                     </form>
                 </Form>
