@@ -1,4 +1,6 @@
+import { formatValue } from "@/helpers/formatValue";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,6 +16,7 @@ import {
     FormMessage,
 } from "../ui/form";
 import { Separator } from "../ui/separator";
+import { Skeleton } from "../ui/skeleton";
 
 const formSchema = z.object({
     item1: z.array(z.string()),
@@ -267,6 +270,7 @@ export function D2SecondModule() {
     const [scoreItem9, setScoreItem9] = useState(0);
     const [scoreItem10, setScoreItem10] = useState(0);
     const [finalResult, setFinalResut] = useState(0);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const savedFormData = JSON.parse(localStorage.getItem("d1m2") || "{}");
 
@@ -293,7 +297,18 @@ export function D2SecondModule() {
     }, [form, form.watch]);
 
     useEffect(() => {
-        const { item1, item2, item3, item4, item5, item6, item7, item8, item9, item10 } = savedFormData;
+        const {
+            item1,
+            item2,
+            item3,
+            item4,
+            item5,
+            item6,
+            item7,
+            item8,
+            item9,
+            item10,
+        } = savedFormData;
         setScoreItem1(calculateScore("item1", item1 || []));
         setScoreItem2(calculateScore("item2", item2 || []));
         setScoreItem3(calculateScore("item3", item3 || []));
@@ -327,7 +342,8 @@ export function D2SecondModule() {
                 (itemName === "item9" &&
                     value === "9.3- Não há previsão de encontros coletivos virtuais") ||
                 (itemName === "item10" &&
-                    value === "10.3- Não há previsibilidade de acessibilidade para os encontros coletivos") ||
+                    value ===
+                    "10.3- Não há previsibilidade de acessibilidade para os encontros coletivos") ||
                 itemName === "item1" ||
                 itemName === "item2" ||
                 itemName === "item3" ||
@@ -381,7 +397,9 @@ export function D2SecondModule() {
                         "10.3- Não há previsibilidade de acessibilidade para os encontros coletivos"
                     )
                 ) {
-                    newValue = ["10.3- Não há previsibilidade de acessibilidade para os encontros coletivos"];
+                    newValue = [
+                        "10.3- Não há previsibilidade de acessibilidade para os encontros coletivos",
+                    ];
                 }
             }
 
@@ -427,6 +445,8 @@ export function D2SecondModule() {
     };
 
     function onSubmit() {
+        setIsLoading(true);
+
         setFinalResut(
             (scoreItem1 +
                 scoreItem2 +
@@ -440,6 +460,10 @@ export function D2SecondModule() {
                 scoreItem10) /
             10
         );
+
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
     }
 
     return (
@@ -513,9 +537,86 @@ export function D2SecondModule() {
                                 )}
                             />
                         ))}
-                        <Button type="submit">Calcular</Button>
-                        {finalResult !== 0 && (
-                            <div>{`Resultado final: ${finalResult}`}</div>
+                        {isLoading ? (
+                            <Button disabled>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Calculando
+                            </Button>
+                        ) : (
+                            <Button type="submit">Calcular</Button>
+                        )}
+                        {isLoading ? (
+                            <div className="flex flex-col gap-4">
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-2/6 h-8" />
+                            </div>
+                        ) : (
+                            finalResult !== 0 && (
+                                <>
+                                    <div>
+                                        {`Item-1: ${formatValue(scoreItem1, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-2: ${formatValue(scoreItem2, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-3: ${formatValue(scoreItem3, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-4: ${formatValue(scoreItem4, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-5: ${formatValue(scoreItem5, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-6: ${formatValue(scoreItem6, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-7: ${formatValue(scoreItem7, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-8: ${formatValue(scoreItem8, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-9: ${formatValue(scoreItem9, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-10: ${formatValue(scoreItem10, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <h1>Cálculo Resultado Final:</h1>
+                                    <div>
+                                        {`(${formatValue(scoreItem1, {
+                                            decimalPlace: 2,
+                                        })} + ${formatValue(scoreItem2, {
+                                            decimalPlace: 2,
+                                        })} + ${formatValue(scoreItem3, {
+                                            decimalPlace: 2,
+                                        })} + ${formatValue(scoreItem4, {
+                                            decimalPlace: 2,
+                                        })} + ${formatValue(scoreItem5, {
+                                            decimalPlace: 2,
+                                        })} + ${formatValue(scoreItem6, {
+                                            decimalPlace: 2,
+                                        })} + ${formatValue(scoreItem7, {
+                                            decimalPlace: 2,
+                                        })} + + ${formatValue(scoreItem8, {
+                                            decimalPlace: 2,
+                                        })} + + ${formatValue(scoreItem9, {
+                                            decimalPlace: 2,
+                                        })} + + ${formatValue(scoreItem10, {
+                                            decimalPlace: 2,
+                                        })}) / 10 = ${formatValue(finalResult, {
+                                            decimalPlace: 2,
+                                        })}`}
+                                    </div>
+                                </>
+                            )
                         )}
                     </form>
                 </Form>

@@ -1,4 +1,6 @@
+import { formatValue } from "@/helpers/formatValue";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,6 +16,7 @@ import {
     FormMessage,
 } from "../ui/form";
 import { Separator } from "../ui/separator";
+import { Skeleton } from "../ui/skeleton";
 
 const formSchema = z.object({
     item1: z.array(z.string()),
@@ -194,6 +197,7 @@ export function D1FirstModule() {
     const [scoreItem6, setScoreItem6] = useState(0);
     const [scoreItem7, setScoreItem7] = useState(0);
     const [finalResult, setFinalResut] = useState(0);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const savedFormData = JSON.parse(localStorage.getItem("d1m1") || "{}");
 
@@ -237,7 +241,11 @@ export function D1FirstModule() {
         return (checked: boolean) => {
             let newValue;
 
-            if (itemName === "item5" && value === "Não se aplica") {
+            if (
+                (itemName === "item5" && value === "Não se aplica") ||
+                itemName === "item6" ||
+                itemName === "item7"
+            ) {
                 newValue = checked ? [value] : [];
             } else {
                 newValue = checked
@@ -246,10 +254,6 @@ export function D1FirstModule() {
 
                 if (itemName === "item5" && newValue.includes("Não se aplica")) {
                     newValue = ["Não se aplica"];
-                }
-
-                if (itemName.includes("item6") || itemName.includes("item7")) {
-                    newValue = [value];
                 }
             }
 
@@ -286,6 +290,7 @@ export function D1FirstModule() {
     };
 
     function onSubmit() {
+        setIsLoading(true);
         setFinalResut(
             (scoreItem1 +
                 scoreItem2 +
@@ -296,6 +301,10 @@ export function D1FirstModule() {
                 scoreItem7) /
             7
         );
+
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
     }
 
     return (
@@ -339,22 +348,24 @@ export function D1FirstModule() {
                                         </FormLabel>
                                         <FormControl>
                                             <div className="flex flex-col gap-2">
-                                                {items[itemName as keyof FormData].data.map((value, idx) => (
-                                                    <label
-                                                        key={idx}
-                                                        className="flex items-center space-x-2"
-                                                    >
-                                                        <Checkbox
-                                                            checked={field.value.includes(value)}
-                                                            onCheckedChange={handleCheckboxChange(
-                                                                field,
-                                                                itemName as keyof FormData,
-                                                                value
-                                                            )}
-                                                        />
-                                                        <span>{value}</span>
-                                                    </label>
-                                                ))}
+                                                {items[itemName as keyof FormData].data.map(
+                                                    (value, idx) => (
+                                                        <label
+                                                            key={idx}
+                                                            className="flex items-center space-x-2"
+                                                        >
+                                                            <Checkbox
+                                                                checked={field.value.includes(value)}
+                                                                onCheckedChange={handleCheckboxChange(
+                                                                    field,
+                                                                    itemName as keyof FormData,
+                                                                    value
+                                                                )}
+                                                            />
+                                                            <span>{value}</span>
+                                                        </label>
+                                                    )
+                                                )}
                                             </div>
                                         </FormControl>
                                         <Separator />
@@ -363,9 +374,71 @@ export function D1FirstModule() {
                                 )}
                             />
                         ))}
-                        <Button type="submit">Calcular</Button>
-                        {finalResult !== 0 && (
-                            <div>{`Resultado final: ${finalResult}`}</div>
+                        {isLoading ? (
+                            <Button disabled>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Calculando
+                            </Button>
+                        ) : (
+                            <Button type="submit">Calcular</Button>
+                        )}
+                        {isLoading ? (
+                            <div className="flex flex-col gap-4">
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-1/6 h-8" />
+                                <Skeleton className="w-2/6 h-8" />
+                            </div>
+                        ) : (
+                            finalResult !== 0 && (
+                                <>
+                                    <div>
+                                        {`Item-1: ${formatValue(scoreItem1, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-2: ${formatValue(scoreItem2, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-3: ${formatValue(scoreItem3, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-4: ${formatValue(scoreItem4, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-5: ${formatValue(scoreItem5, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-6: ${formatValue(scoreItem6, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <div>
+                                        {`Item-7: ${formatValue(scoreItem7, { decimalPlace: 2 })}`}
+                                    </div>
+                                    <h1>Cálculo Resultado Final:</h1>
+                                    <div>
+                                        {`(${formatValue(scoreItem1, {
+                                            decimalPlace: 2,
+                                        })} + ${formatValue(scoreItem2, {
+                                            decimalPlace: 2,
+                                        })} + ${formatValue(scoreItem3, {
+                                            decimalPlace: 2,
+                                        })} + ${formatValue(scoreItem4, {
+                                            decimalPlace: 2,
+                                        })} + ${formatValue(scoreItem5, {
+                                            decimalPlace: 2,
+                                        })} + ${formatValue(scoreItem6, {
+                                            decimalPlace: 2,
+                                        })} + ${formatValue(scoreItem7, {
+                                            decimalPlace: 2,
+                                        })}) / 7 = ${formatValue(finalResult, {
+                                            decimalPlace: 2,
+                                        })}`}
+                                    </div>
+                                </>
+                            )
                         )}
                     </form>
                 </Form>
