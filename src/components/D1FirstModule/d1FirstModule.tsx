@@ -201,6 +201,16 @@ export function D1FirstModule() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const pdfRef = useRef<HTMLFormElement>(null);
 
+    const initialFormData = {
+        item1: [],
+        item2: [],
+        item3: [],
+        item4: [],
+        item5: [],
+        item6: [],
+        item7: [],
+    };
+
     const savedFormData = JSON.parse(localStorage.getItem("d1m1") || "{}");
 
     const form = useForm<FormData>({
@@ -291,6 +301,19 @@ export function D1FirstModule() {
         };
     };
 
+    const handleResetForm = () => {
+        localStorage.removeItem("d1m1");
+        form.reset(initialFormData);
+        setScoreItem1(0);
+        setScoreItem2(0);
+        setScoreItem3(0);
+        setScoreItem4(0);
+        setScoreItem5(0);
+        setScoreItem6(0);
+        setScoreItem7(0);
+        setFinalResut(0);
+    };
+
     function onSubmit() {
         setIsLoading(true);
         setFinalResut(
@@ -321,7 +344,7 @@ export function D1FirstModule() {
             <CardHeader />
             <CardContent>
                 <div className="flex w-full justify-end">
-                    <Button onClick={() => { localStorage.removeItem("d1m1"); form.reset() }}>Limpar formulário</Button>
+                    <Button onClick={handleResetForm}>Limpar formulário</Button>
                 </div>
                 <Form {...form}>
                     <form
