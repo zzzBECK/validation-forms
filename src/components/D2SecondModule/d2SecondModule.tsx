@@ -34,6 +34,7 @@ const formSchema = z.object({
     item12: z.array(z.string()),
     item13: z.array(z.string()),
     item14: z.array(z.string()),
+    item15: z.array(z.string()),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -170,31 +171,37 @@ const items = {
             "12.2- Modalidade: Virtual",
             "12.3- Modalidade: Híbrida",
             "12.4- Modalidade: Não há previsão para a disseminação e compartilhamento das aprendizagens e resultados",
-            "12.5- Os seminários serão realizados contemplando as esferas da federação: Seminários municipais",
-            "12.6- Os seminários serão realizados contemplando as esferas da federação: Seminários regionais",
-            "12.7- Os seminários serão realizados contemplando as esferas da federação: Seminários estaduais",
         ],
     },
     item13: {
-        title: "Previsão de formatos para a disseminação e compartilhamento das aprendizagens consolidades",
+        title: "Formas de disseminação e compartilhamento das aprendizagens e dos resultados do processo formativo",
         data: [
-            "13.1- Painéis",
-            "13.2- Grupos de discussão",
-            "13.3- Oficinas",
-            "13.4- Debates",
-            "13.5- Mesas Temáticas",
-            "13.6- Conferências",
-            "13.7- Outros formatos",
+            "13.1- Os seminários serão realizados contemplando as esferas da federação: Seminários municipais",
+            "13.2- Os seminários serão realizados contemplando as esferas da federação: Seminários regionais",
+            "13.3- Os seminários serão realizados contemplando as esferas da federação: Seminários estaduais",
+            "13.4- Modalidade: Não há previsão para a disseminação e compartilhamento das aprendizagens e resultados",
         ],
     },
     item14: {
+        title: "Previsão de formatos para a disseminação e compartilhamento das aprendizagens consolidadas",
+        data: [
+            "14.1- Painéis",
+            "14.2- Grupos de discussão",
+            "14.3- Oficinas",
+            "14.4- Debates",
+            "14.5- Mesas Temáticas",
+            "14.6- Conferências",
+            "14.7- Outros formatos",
+        ],
+    },
+    item15: {
         title: "A análise dos Livros Didáticos objetiva",
         data: [
-            "14.1- Verificar a consonância com os referenciais curriculares dos territórios",
-            "14.2- Identificar a conformidade com a perspectiva inclusiva",
-            "14.3- Analisar se a proposta reconhece a alfabetização como processo discursivo",
-            "14.4- Discutir o protagonismo docente para selecionar e adaptar os temas e as atividades propostas nos livros de acordo com as necessidades dos estudantes",
-            "14.5- Refletir sobre o planejamento e criação de atividades complementares que estimulem a reflexão e o debate",
+            "15.1- Verificar a consonância com os referenciais curriculares dos territórios",
+            "15.2- Identificar a conformidade com a perspectiva inclusiva",
+            "15.3- Analisar se a proposta reconhece a alfabetização como processo discursivo",
+            "15.4- Discutir o protagonismo docente para selecionar e adaptar os temas e as atividades propostas nos livros de acordo com as necessidades dos estudantes",
+            "15.5- Refletir sobre o planejamento e criação de atividades complementares que estimulem a reflexão e o debate",
         ],
     },
 };
@@ -279,24 +286,29 @@ const calculateScore = (
             if (selectedOptions.length === 11) return 1;
             return 0;
         case "item12":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length === 1) return 0.25;
-            if (selectedOptions.length <= 4) return 0.5;
-            if (selectedOptions.length <= 7) return 0.75;
-            if (selectedOptions.length === 8) return 1;
+            if (selectedOptions.includes("12.1- Modalidade: Presencial")) return 0.75;
+            if (selectedOptions.includes("12.2- Modalidade: Virtual")) return 0.5;
+            if (selectedOptions.includes("12.3- Modalidade: Híbrida")) return 1;
+            if (selectedOptions.includes("12.4- Modalidade: Não há previsão para a disseminação e compartilhamento das aprendizagens e resultados")) return 0;
             return 0;
         case "item13":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length <= 2) return 0.25;
-            if (selectedOptions.length <= 4) return 0.5;
-            if (selectedOptions.length <= 7) return 0.75;
-            if (selectedOptions.length === 8) return 1;
+            if (selectedOptions.includes("13.2- Os seminários serão realizados contemplando as esferas da federação: Seminários regionais")) return 0.75;
+            if (selectedOptions.includes("13.1- Os seminários serão realizados contemplando as esferas da federação: Seminários municipais")) return 0.5;
+            if (selectedOptions.includes("13.3- Os seminários serão realizados contemplando as esferas da federação: Seminários estaduais")) return 1;
+            if (selectedOptions.includes("13.4- Modalidade: Não há previsão para a disseminação e compartilhamento das aprendizagens e resultados")) return 0;
             return 0;
         case "item14":
             if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.length <= 2) return 0.25;
+            if (selectedOptions.length <= 4) return 0.5;
+            if (selectedOptions.length < 7) return 0.75;
+            if (selectedOptions.length === 7) return 1;
+            return 0;
+        case "item15":
+            if (selectedOptions.length === 0) return 0;
             if (selectedOptions.length === 1) return 0.25;
             if (selectedOptions.length <= 3) return 0.5;
-            if (selectedOptions.length <= 4) return 0.75;
+            if (selectedOptions.length === 4) return 0.75;
             if (selectedOptions.length === 5) return 1;
             return 0;
         default:
@@ -323,6 +335,7 @@ export function D2SecondModule({ state }: Props) {
     const [scoreItem12, setScoreItem12] = useState(0);
     const [scoreItem13, setScoreItem13] = useState(0);
     const [scoreItem14, setScoreItem14] = useState(0);
+    const [scoreItem15, setScoreItem15] = useState(0);
     const [finalResult, setFinalResult] = useState(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const pdfRef = useRef<HTMLDivElement>(null);
@@ -342,6 +355,7 @@ export function D2SecondModule({ state }: Props) {
         item12: [],
         item13: [],
         item14: [],
+        item15: [],
     };
 
     const savedFormData = JSON.parse(localStorage.getItem("d2m2") || "{}");
@@ -363,6 +377,7 @@ export function D2SecondModule({ state }: Props) {
             item12: savedFormData.item12 || [],
             item13: savedFormData.item13 || [],
             item14: savedFormData.item14 || [],
+            item15: savedFormData.item15 || [],
         },
     });
 
@@ -373,7 +388,7 @@ export function D2SecondModule({ state }: Props) {
     }, [form, form.watch]);
 
     useEffect(() => {
-        const { item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14 } = savedFormData;
+        const { item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15 } = savedFormData;
         setScoreItem1(calculateScore("item1", item1 || []));
         setScoreItem2(calculateScore("item2", item2 || []));
         setScoreItem3(calculateScore("item3", item3 || []));
@@ -388,6 +403,7 @@ export function D2SecondModule({ state }: Props) {
         setScoreItem12(calculateScore("item12", item12 || []));
         setScoreItem13(calculateScore("item13", item13 || []));
         setScoreItem14(calculateScore("item14", item14 || []));
+        setScoreItem15(calculateScore("item15", item15 || []));
     }, [savedFormData]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -400,7 +416,7 @@ export function D2SecondModule({ state }: Props) {
         return (checked: boolean) => {
             let newValue;
 
-            if (itemName === "item9") {
+            if (itemName === "item9" || itemName === "item12" || itemName === "item13") {
                 newValue = checked ? [value] : [];
             }
             else {
@@ -461,6 +477,9 @@ export function D2SecondModule({ state }: Props) {
                 case "item14":
                     setScoreItem14(score);
                     break;
+                case "item15":
+                    setScoreItem15(score);
+                    break;
                 default:
                     break;
             }
@@ -468,7 +487,7 @@ export function D2SecondModule({ state }: Props) {
     };
 
     const handleResetForm = () => {
-        localStorage.removeItem("d2m1");
+        localStorage.removeItem("d2m2");
         form.reset(initialFormData);
         setScoreItem1(0);
         setScoreItem2(0);
@@ -484,6 +503,7 @@ export function D2SecondModule({ state }: Props) {
         setScoreItem12(0);
         setScoreItem13(0);
         setScoreItem14(0);
+        setScoreItem15(0);
         setFinalResult(0);
     };
 
@@ -503,8 +523,9 @@ export function D2SecondModule({ state }: Props) {
                 scoreItem11 +
                 scoreItem12 +
                 scoreItem13 +
-                scoreItem14) /
-            14
+                scoreItem14 +
+                scoreItem15) /
+            15
         );
 
         setTimeout(() => {
@@ -571,6 +592,8 @@ export function D2SecondModule({ state }: Props) {
                                                         return scoreItem13;
                                                     case "item14":
                                                         return scoreItem14;
+                                                    case "item15":
+                                                        return scoreItem15;
                                                     default:
                                                         return 0;
                                                 }
@@ -669,6 +692,9 @@ export function D2SecondModule({ state }: Props) {
                                     <div>
                                         {`Item-14: ${formatValue(scoreItem14, { decimalPlace: 2 })}`}
                                     </div>
+                                    <div>
+                                        {`Item-15: ${formatValue(scoreItem15, { decimalPlace: 2 })}`}
+                                    </div>
                                     <h1>Cálculo Resultado Final:</h1>
                                     <div>
                                         {`(${formatValue(scoreItem1, {
@@ -699,7 +725,9 @@ export function D2SecondModule({ state }: Props) {
                                             decimalPlace: 2,
                                         })} + ${formatValue(scoreItem14, {
                                             decimalPlace: 2,
-                                        })}) / 14 = ${formatValue(finalResult, {
+                                        })} + ${formatValue(scoreItem15, {
+                                            decimalPlace: 2,
+                                        })}) / 15 = ${formatValue(finalResult, {
                                             decimalPlace: 2,
                                         })}`}
                                     </div>
