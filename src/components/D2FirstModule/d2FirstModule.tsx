@@ -364,7 +364,7 @@ export function D2FirstModule({ state }: Props) {
     const [scoreItem17, setScoreItem17] = useState(0);
     const [finalResult, setFinalResult] = useState(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const pdfRef = useRef<HTMLFormElement>(null);
+    const pdfRef = useRef<HTMLDivElement>(null);
 
     const initialFormData = {
         item1: [],
@@ -582,7 +582,7 @@ export function D2FirstModule({ state }: Props) {
     });
 
     return (
-        <Card>
+        <Card ref={pdfRef}>
             <CardHeader className="flex flex-row justify-between items-center">
                 <h1 className="flex w-fit text-6xl">{state}</h1>
                 <div className="w-fit" >
@@ -593,8 +593,7 @@ export function D2FirstModule({ state }: Props) {
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="flex flex-col gap-4 p-4"
-                        ref={pdfRef}
+                        className="flex flex-col gap-4"
                     >
                         {Object.keys(formSchema.shape).map((itemName) => (
                             <FormField
@@ -683,7 +682,7 @@ export function D2FirstModule({ state }: Props) {
                             <Button type="submit">Calcular</Button>
                         )}
                         {isLoading ? (
-                            <div className="flex flex-col gap-4 p-4" >
+                            <div className="flex flex-col gap-4" >
                                 <Skeleton className="w-1/6 h-8" />
                                 <Skeleton className="w-1/6 h-8" />
                                 <Skeleton className="w-1/6 h-8" />
