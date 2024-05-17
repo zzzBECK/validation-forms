@@ -2,10 +2,10 @@ import { useState } from "react";
 import { D1FirstModule } from "./components/D1FirstModule/d1FirstModule";
 import { D1SecondModule } from "./components/D1SecondModule/d1SecondModule";
 import { D2FirstModule } from "./components/D2FirstModule/d2FirstModule";
+import { D2SecondModule } from "./components/D2SecondModule/d2SecondModule";
+import { ModeToggle } from "./components/mode-toggle";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
-import { ModeToggle } from "./components/mode-toggle";
-import { D2SecondModule } from "./components/D2SecondModule/d2SecondModule";
 
 function App() {
   const [dimension, setDimension] = useState<string>();
@@ -20,8 +20,8 @@ function App() {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="d1">Dimensão 1</SelectItem>
-              <SelectItem value="d2">Dimensão 2</SelectItem>
+              <SelectItem value="d1">DIMENSÃO 1: ARQUITETURA INSTITUCIONAL DO PROGRAMA DE FORMAÇÃO</SelectItem>
+              <SelectItem value="d2">{"DIMENSÃO 2: Aspectos metodológicos privilegiados na formação continuada".toUpperCase()}</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -30,12 +30,12 @@ function App() {
 
       {dimension === "d1" &&
         <Tabs defaultValue="d1FirstModule" className="w-full pt-10">
-          <TabsList className="flex gap-4 w-full">
+          <TabsList className="flex flex-col md:flex-row gap-4 w-full">
             <TabsTrigger className="w-full" value="d1FirstModule">
-              D1 - CATEGORIA 1
+              CATEGORIA: ORGANIZAÇÃO DA OFERTA NO  ÂMBITO DA ALFABETIZAÇÃO E LETRAMENTO
             </TabsTrigger>
             <TabsTrigger className="w-full" value="d1SecondModule">
-              D1 - CATEGORIA 2
+              CATEGORIA: ORGANIZAÇÃO DA CARGA HORÁRIA DOS PERCURSOS FORMATIVOS
             </TabsTrigger>
           </TabsList>
           <TabsContent value="d1FirstModule">
@@ -50,10 +50,10 @@ function App() {
         <Tabs defaultValue="d2FirstModule" className="w-full h-fit pt-10">
           <TabsList className="flex flex-col md:flex-row gap-4 w-full">
             <TabsTrigger className="w-full" value="d2FirstModule">
-              D2 - CATEGORIA 1
+              {"CATEGORIA: Organização Pedagógica do Percurso Formativo".toUpperCase()}
             </TabsTrigger>
             <TabsTrigger className="w-full" value="d2SecondModule">
-              D2 - CATEGORIA 2
+              {"CATEGORIA: Metodologia do percurso formativo: aspectos sobre a organização do trabalho pedagógico".toUpperCase()}
             </TabsTrigger>
           </TabsList>
           <TabsContent value="d2FirstModule">

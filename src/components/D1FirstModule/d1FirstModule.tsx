@@ -197,7 +197,7 @@ export function D1FirstModule() {
     const [scoreItem5, setScoreItem5] = useState(0);
     const [scoreItem6, setScoreItem6] = useState(0);
     const [scoreItem7, setScoreItem7] = useState(0);
-    const [finalResult, setFinalResut] = useState(0);
+    const [finalResult, setFinalResult] = useState(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const pdfRef = useRef<HTMLFormElement>(null);
 
@@ -311,12 +311,12 @@ export function D1FirstModule() {
         setScoreItem5(0);
         setScoreItem6(0);
         setScoreItem7(0);
-        setFinalResut(0);
+        setFinalResult(0);
     };
 
     function onSubmit() {
         setIsLoading(true);
-        setFinalResut(
+        setFinalResult(
             (scoreItem1 +
                 scoreItem2 +
                 scoreItem3 +

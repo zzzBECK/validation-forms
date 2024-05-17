@@ -362,6 +362,26 @@ export function D2FirstModule() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const pdfRef = useRef<HTMLFormElement>(null);
 
+    const initialFormData = {
+        item1: [],
+        item2: [],
+        item3: [],
+        item4: [],
+        item5: [],
+        item6: [],
+        item7: [],
+        item8: [],
+        item9: [],
+        item10: [],
+        item11: [],
+        item12: [],
+        item13: [],
+        item14: [],
+        item15: [],
+        item16: [],
+        item17: [],
+    };
+
     const savedFormData = JSON.parse(localStorage.getItem("d2m1") || "{}");
 
     const form = useForm<FormData>({
@@ -500,6 +520,29 @@ export function D2FirstModule() {
         };
     };
 
+    const handleResetForm = () => {
+        localStorage.removeItem("d2m1");
+        form.reset(initialFormData);
+        setScoreItem1(0);
+        setScoreItem2(0);
+        setScoreItem3(0);
+        setScoreItem4(0);
+        setScoreItem5(0);
+        setScoreItem6(0);
+        setScoreItem7(0);
+        setScoreItem8(0);
+        setScoreItem9(0);
+        setScoreItem10(0);
+        setScoreItem11(0);
+        setScoreItem12(0);
+        setScoreItem13(0);
+        setScoreItem14(0);
+        setScoreItem15(0);
+        setScoreItem16(0);
+        setScoreItem17(0);
+        setFinalResult(0);
+    };
+
     function onSubmit() {
         setIsLoading(true);
         setFinalResult(
@@ -539,7 +582,7 @@ export function D2FirstModule() {
             <CardHeader />
             <CardContent>
                 <div className="flex w-full justify-end">
-                    <Button onClick={() => { localStorage.removeItem("d1m1"); form.reset() }}>Limpar formulário</Button>
+                    <Button onClick={handleResetForm}>Limpar formulário</Button>
                 </div>
                 <Form {...form}>
                     <form
