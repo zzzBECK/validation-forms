@@ -311,7 +311,7 @@ export function D1FirstModule() {
 
     const downloadPDF = useReactToPrint({
         content: () => pdfRef.current,
-        documentTitle: 'PDF do Componente Específico',
+        documentTitle: 'Dimensão 1 - Categoria 1',
         onAfterPrint: () => alert('Download realizado com sucesso!')
     });
 

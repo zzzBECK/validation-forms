@@ -530,7 +530,7 @@ export function D2FirstModule() {
 
     const downloadPDF = useReactToPrint({
         content: () => pdfRef.current,
-        documentTitle: 'PDF do Componente Específico',
+        documentTitle: 'Dimensão 2 - Categoria 1',
         onAfterPrint: () => alert('Download realizado com sucesso!')
     });
 
