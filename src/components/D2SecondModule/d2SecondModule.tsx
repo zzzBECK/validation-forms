@@ -304,7 +304,11 @@ const calculateScore = (
     }
 };
 
-export function D2SecondModule() {
+interface Props {
+    state: string;
+}
+
+export function D2SecondModule({ state }: Props) {
     const [scoreItem1, setScoreItem1] = useState(0);
     const [scoreItem2, setScoreItem2] = useState(0);
     const [scoreItem3, setScoreItem3] = useState(0);
@@ -510,17 +514,19 @@ export function D2SecondModule() {
 
     const downloadPDF = useReactToPrint({
         content: () => pdfRef.current,
-        documentTitle: 'Dimensão 2 - Categoria 2',
+        documentTitle: `Dimensão 2 - Categoria 2 - ${state}`,
         onAfterPrint: () => alert('Download realizado com sucesso!')
     });
 
     return (
         <Card>
-            <CardHeader />
-            <CardContent>
-                <div className="flex w-full justify-end">
+            <CardHeader className="flex flex-row justify-between items-center">
+                <h1 className="flex w-fit text-6xl">{state}</h1>
+                <div className="w-fit" >
                     <Button onClick={handleResetForm}>Limpar formulário</Button>
                 </div>
+            </CardHeader>
+            <CardContent>
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
