@@ -347,7 +347,7 @@ export function D1FirstModule({ state }: Props) {
         <Card ref={pdfRef}>
             <CardHeader className="flex flex-col md:flex-row justify-between md:items-center">
                 <h1 className="flex w-fit text-5xl md:text-6xl">{state}</h1>
-                <div className="w-fit md:mt-0" >
+                <div className="w-fit md:mt-0 no-print">
                     <Button onClick={handleResetForm}>Limpar formulário</Button>
                 </div>
             </CardHeader>
@@ -416,12 +416,12 @@ export function D1FirstModule({ state }: Props) {
                             />
                         ))}
                         {isLoading ? (
-                            <Button disabled>
+                            <Button disabled className="no-print">
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                 Calculando
                             </Button>
                         ) : (
-                            <Button type="submit">Calcular</Button>
+                            <Button type="submit" className="no-print">Calcular</Button>
                         )}
                         {isLoading ? (
                             <div className="flex flex-col gap-4" >
@@ -479,7 +479,7 @@ export function D1FirstModule({ state }: Props) {
                                             decimalPlace: 2,
                                         })}`}
                                     </div>
-                                    <Button type="button" onClick={downloadPDF}>
+                                    <Button type="button" onClick={downloadPDF} className="no-print">
                                         Baixar PDF
                                     </Button>
                                 </>
