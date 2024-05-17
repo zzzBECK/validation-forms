@@ -541,7 +541,7 @@ export function D2FirstModule() {
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="flex flex-col gap-4" p-4
+                        className="flex flex-col gap-4 p-4"
                         ref={pdfRef}
                     >
                         {Object.keys(formSchema.shape).map((itemName) => (
@@ -631,7 +631,7 @@ export function D2FirstModule() {
                             <Button type="submit">Calcular</Button>
                         )}
                         {isLoading ? (
-                            <div className="flex flex-col gap-4" p-4>
+                            <div className="flex flex-col gap-4 p-4" >
                                 <Skeleton className="w-1/6 h-8" />
                                 <Skeleton className="w-1/6 h-8" />
                                 <Skeleton className="w-1/6 h-8" />

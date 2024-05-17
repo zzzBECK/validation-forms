@@ -569,7 +569,7 @@ export function D2SecondModule() {
                             <Button type="submit">Calcular</Button>
                         )}
                         {isLoading ? (
-                            <div className="flex flex-col gap-4" p-4>
+                            <div className="flex flex-col gap-4 p-4" >
                                 <Skeleton className="w-1/6 h-8" />
                                 <Skeleton className="w-1/6 h-8" />
                                 <Skeleton className="w-1/6 h-8" />
