@@ -112,7 +112,7 @@ function App() {
             </Tabs>}
         </>
       ) : (<Card className="w-full h-[70vh] mt-5">
-        <CardContent className="flex justify-center items-center w-full h-full">Selecione a dimensão e o estado</CardContent>
+        <CardContent className="flex justify-center items-center w-full h-full p-0">Selecione a dimensão e o estado</CardContent>
       </Card>)}
 
     </main>
