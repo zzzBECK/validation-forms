@@ -1,12 +1,10 @@
 import { formatValue } from "@/helpers/formatValue";
 import { zodResolver } from "@hookform/resolvers/zod";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { Loader2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useReactToPrint } from "react-to-print";
 import { z } from "zod";
-import { useTheme } from "../theme-provider";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
@@ -261,7 +259,7 @@ const calculateScore = (
     }
 };
 
-export function D2SecondModule() {
+export function D1SecondModule() {
     const [scoreItem1, setScoreItem1] = useState(0);
     const [scoreItem2, setScoreItem2] = useState(0);
     const [scoreItem3, setScoreItem3] = useState(0);
@@ -274,8 +272,6 @@ export function D2SecondModule() {
     const [scoreItem10, setScoreItem10] = useState(0);
     const [finalResult, setFinalResut] = useState(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isDownloading, setIsDownloading] = useState<boolean>(false);
-    const { theme, setTheme } = useTheme();
     const pdfRef = useRef<HTMLFormElement>(null);
 
     const savedFormData = JSON.parse(localStorage.getItem("d1m2") || "{}");
@@ -472,50 +468,11 @@ export function D2SecondModule() {
         }, 2000);
     }
 
-    const downloadPDF = async () => {
-        setIsDownloading(true);
-        const originalTheme = theme;
-        setTheme("light");
-        if (pdfRef.current) {
-            setTimeout(async () => {
-                const canvas = await html2canvas(pdfRef.current as HTMLFormElement);
-                const imgData = canvas.toDataURL("image/png");
-                const pdf = new jsPDF();
-                const imgProps = pdf.getImageProperties(imgData);
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdf.internal.pageSize.getHeight();
-
-                // Defina o padding desejado em pontos, por exemplo, 20 pontos
-                const padding = 10;
-                const availableWidth = pdfWidth - 2 * padding; // Largura disponível ajustada pelo padding
-                const availableHeight = pdfHeight - 2 * padding; // Altura disponível ajustada pelo padding
-
-                // Cálculo para escalar a imagem proporcionalmente dentro das dimensões disponíveis
-                const imgRatio = imgProps.width / imgProps.height;
-                let finalImgHeight;
-
-                if (availableWidth / availableHeight > imgRatio) {
-                    // A imagem é relativamente mais alta do que a área disponível
-                    finalImgHeight = availableHeight;
-                } else {
-                    finalImgHeight = availableWidth / imgRatio;
-                }
-
-                // Adiciona a imagem com padding à esquerda e ao topo
-                pdf.addImage(
-                    imgData,
-                    "PNG",
-                    padding,
-                    padding,
-                    availableWidth,
-                    finalImgHeight
-                );
-                pdf.save("dimensao1-categoria2.pdf");
-                setTheme(originalTheme);
-                setIsDownloading(false);
-            }, 1000);
-        }
-    };
+    const downloadPDF = useReactToPrint({
+        content: () => pdfRef.current,
+        documentTitle: 'PDF do Componente Específico',
+        onAfterPrint: () => alert('Download realizado com sucesso!')
+    });
 
     return (
         <Card>
@@ -670,16 +627,9 @@ export function D2SecondModule() {
                                             decimalPlace: 2,
                                         })}`}
                                     </div>
-                                    {isDownloading ? (
-                                        <Button disabled>
-                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            Baixando
-                                        </Button>
-                                    ) : (
-                                        <Button type="button" onClick={downloadPDF}>
-                                            Baixar PDF
-                                        </Button>
-                                    )}
+                                    <Button type="button" onClick={downloadPDF}>
+                                        Baixar PDF
+                                    </Button>
                                 </>
                             )
                         )}

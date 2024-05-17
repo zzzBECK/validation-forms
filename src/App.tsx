@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { D1FirstModule } from "./components/D1FirstModule/d1FirstModule";
-import { D2SecondModule } from "./components/D1SecondModule/d1SecondModule";
+import { D1SecondModule } from "./components/D1SecondModule/d1SecondModule";
 import { D2FirstModule } from "./components/D2FirstModule/d2FirstModule";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { ModeToggle } from "./components/mode-toggle";
+import { D2SecondModule } from "./components/D2SecondModule/d2SecondModule";
 
 function App() {
   const [dimension, setDimension] = useState<string>();
@@ -41,7 +42,7 @@ function App() {
             <D1FirstModule />
           </TabsContent>
           <TabsContent value="d1SecondModule">
-            <D2SecondModule />
+            <D1SecondModule />
           </TabsContent>
         </Tabs>}
 
@@ -54,15 +55,12 @@ function App() {
             <TabsTrigger className="w-full" value="d2SecondModule">
               D2 - CATEGORIA 2
             </TabsTrigger>
-            <TabsTrigger className="w-full" value="d2ThirdModule">
-              D2 - CATEGORIA 3
-            </TabsTrigger>
-            <TabsTrigger className="w-full" value="d2FourthModule">
-              D2 - CATEGORIA 4
-            </TabsTrigger>
           </TabsList>
           <TabsContent value="d2FirstModule">
             <D2FirstModule />
+          </TabsContent>
+          <TabsContent value="d2SecondModule">
+            <D2SecondModule />
           </TabsContent>
         </Tabs>}
 

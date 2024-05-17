@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useReactToPrint } from "react-to-print";
+import { useReactToPrint } from 'react-to-print';
 import { z } from "zod";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
@@ -34,188 +34,167 @@ const formSchema = z.object({
     item12: z.array(z.string()),
     item13: z.array(z.string()),
     item14: z.array(z.string()),
-    item15: z.array(z.string()),
-    item16: z.array(z.string()),
-    item17: z.array(z.string()),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
 const items = {
     item1: {
-        title: "Apresenta os tópicos para a formatação do curso",
+        title: "Estratégias pedagógicas",
         data: [
-            "1.1- Título do curso",
-            "1.2- Carga Horária (encontros coletivos presenciais e atividades diversificadas)",
-            "1.3- Modalidade",
-            "1.4- Objetivo Geral",
-            "1.5- Objetivos de Aprendizagem e Desenvolvimento Profissional",
-            "1.6- Fundamentação Teórica",
-            "1.7- Estratégias Metodológicas",
-            "1.8- Formas de avaliação e certificação",
-            "1.9- Instituição, entidade ou equipe responsável pela formação",
-            "1.10- Produtos Finais",
-            "1.11- Cronograma",
+            "1.1- Sinalizam práticas que privilegiem a fruição e experimentação com linguagens e suas expressões por meio de atividades artísticas, como pintura, música, teatro e poesia",
+            "1.2- Organizam sequências de atividades que proporcionam apreciar as diversas linguagens artísticas: arte, música, dança, teatro, artes visuais",
+            "1.3- Sinalizam práticas para apreciar a literatura infantil em sua diversidade",
+            "1.4- Sinalizam práticas para lidar com textos variados com o intuito de descobrir a estética presente na literatura infantil",
+            "1.5- Sinalizam práticas para vivenciar a fantasia e a imaginação",
+            "1.6- Organizam vivencias que possibilitem explorar e expressar suas ideias, emoções e experiências de forma criativa e pessoal",
         ],
     },
     item2: {
-        title: "Experiência em alfabetização e letramento",
+        title: "O planejamento prevê momentos que privilegiam a “Escuta democrática” como base para a reflexão da prática pedagógica",
         data: [
-            "2.1- Atuação em turmas de 1° e 2° anos do Ensino Fundamental",
-            "2.2- Cursos e extensão e/ou pós-graduação em alfabetização e letramento",
-            "2.3- Não apresenta experiência em alfabetização e letramento",
+            "2.1- Prevê momentos para apresentar as demandas e necessidades de formação e desenvolvimento profissional",
+            "2.2- Apresenta flexibilidade no planejamento do percurso formativo para atender às demandas e necessidades dos cursistas",
+            "2.3- Prevê momentos para troca de experiências exitosas",
+            "2.4- Prevê momentos para levantar inquietações sobre o processo de alfabetização",
+            "2.5- Privilegia momentos para compartilhamento de práticas sociais culturais",
+            "2.6- Privilegia momentos de roda de conversas para conhecer, compartilhar e refletir sobre os conhecimentos prévios",
         ],
     },
     item3: {
-        title: "Objetivo geral",
+        title: "Estratégias metodológicas visando à ampliação do repertório profissional",
         data: [
-            "3.1- Apresenta clareza e alinhamento às diretrizes do Compromisso Nacional Criança Alfabetizada",
-            "3.2- Sinaliza a organização do percurso a partir das demandas e necessidades do público-alvo",
-            "3.3- Sinaliza a articulação teórica com a ação crítica e reflexiva sobre a prática cotidiana",
-            "3.4- Sinaliza o reconhecimento dos direitos de aprendizagem do estudante",
-            "3.5- Sinaliza o papel do professor como mediador desse processo",
-            "3.6- Sinaliza a intencionalidade pedagógica como tomada de decisão fundamental na mobilização dos saberes",
+            "3.1- Contemplam espaços dialógicos entre a prática pedagógica e os conteúdos previstos",
+            "3.2- Preveem momentos de reflexão, pesquisa, ação, descoberta, organização, fundamentação e revisão e construção teórica",
+            "3.3- Preveem o acompanhamento sistematizado da prática pedagógica",
+            "3.4- Contemplam espaços dialógicos entre a prática pedagógica e os conteúdos previstos na perspectiva inclusiva, no âmbito da Educação do Campo",
+            "3.5- Contemplam espaços dialógicos entre a prática pedagógica e os conteúdos previstos na perspectiva inclusiva, no âmbito da Educação Especial",
+            "3.6- Contemplam espaços dialógicos entre a prática pedagógica e os conteúdos previstos na perspectiva inclusiva, no âmbito da Educação Indígena",
+            "3.7- Preveem, a partir dos conteúdos, sugestões de mudanças no contexto das práticas sociais, visando à reflexão crítica, como também, à transformação dessas práticas",
+            "3.8- Preveem um espaço dialógico que contemple a relação teoria e prática a partir do compartilhamento de questões, levantamento de respostas, de análises, validações entre pares, e sistematizações conceituais para lidar com as demandas identificadas no processo de alfabetização",
+            "3.9- Preveem atividades que promovam a conscientização sobre a identidade como parte de uma comunidade profissional de leitores e escritores",
         ],
     },
     item4: {
-        title: "Objetivos de aprendizagem",
+        title: "As práticas pedagógicas",
         data: [
-            "4.1- Os objetivos de aprendizagem preveem a apropriação e a ressignificação dos saberes sobre a alfabetização a partir de situações didáticas reflexivas sobre a prática cotidiana dos profissionais da educação",
-            "4.2- Indicam objetivos de aprendizagem que contemplam a reflexão sobre: O caráter discursivo e enunciativo da língua",
-            "4.3- Indicam objetivos de aprendizagem que contemplam a reflexão sobre: A função social da leitura e da escrita",
-            "4.4- Indicam objetivos de aprendizagem que contemplam a reflexão sobre: A compreensão da multidimensionalidade do processo de alfabetização: linguística, cognitiva, sociocultural, afetiva e tecnológica",
-            "4.5- Indicam objetivos de aprendizagem que contemplam a reflexão sobre: O reconhecimento e compromisso ético-político para o enfretamento e proposições para superar questões relativas ao racismo, a aporofobia e ao capacitismo",
-            "4.6-  Indicam os objetivos de aprendizagem das unidades temáticas ou módulos",
+            "4.1- Sinalizam o protagonismo dos profissionais da educação produzirem seus próprios planejamentos e recursos didáticos",
+            "4.2- Preveem o processo criativo do trabalho docente, exerce o direito de pensar, elaborar, organizar e avaliar as suas ações no contexto escolar",
+            "4.3- Preveem a análise crítica das atividades propostas em relação aos objetivos de aprendizagem",
+            "4.4- Preveem a análise e escolha intencional dos objetivos de aprendizagem a partir das necessidades dos estudantes",
+            "4.5- Preveem engajamento ético-político e estético dos profissionais da educação",
+            "4.6- Preveem discussões sobre a equidade, diversidade, inclusão e justiça social",
         ],
     },
     item5: {
-        title: "Apresenta ampliação do repertório como elemento estruturante da reflexão crítica e do aprofundamento da consciência profissional",
+        title: "As práticas pedagógicas contemplam as concepções teóricos metodológicas indicadas para o ensino da leitura e da escrita das crianças a partir",
         data: [
-            "5.1- Apresenta pesquisas no âmbito da alfabetização e letramento: Em Educação",
-            "5.2- Apresenta pesquisas no âmbito da alfabetização e letramento: Desenvolvidas no Território",
-            "5.3- Apresenta pesquisas no âmbito da alfabetização e letramento: Em áreas afins: Linguística, Psicologia, entre outras",
-            "5.4- Apresenta pesquisas no âmbito da alfabetização e letramento: Em áreas afins: No âmbito nacional",
-            "5.5- Apresenta pesquisas no âmbito da alfabetização e letramento: Em áreas afins: No âmbito internacional",
-            "5.6- Apresenta revisão teórica e pesquisas anteriores relacionadas ao tema",
-            "5.7- Inclui debates e tendências na área",
-            "5.8- Apresenta evidências ou pesquisas que subsidiam as teorias e/ou conceitos abordados",
-            "5.8- Apresenta pesquisas sobre a alfabetização na perspectiva do letramento no contexto inclusivo, no âmbito da: Educação Especial",
-            "5.9- Apresenta pesquisas sobre a alfabetização na perspectiva do letramento no contexto inclusivo, no âmbito da: Educação do Campo",
-            "5.10- Apresenta pesquisas sobre a alfabetização na perspectiva do letramento no contexto inclusivo, no âmbito da: Educação Indígena",
+            "5.1- Do reconhecimento do estudante como usuário competente e participante efetivo de práticas sociais que envolvem a leitura e a escrita",
+            "5.2- Da construção de leitores ativos que percebem a leitura como forma de comunicar significados e de construir ativamente significados nos textos",
+            "5.3- De atividades que condizem com textos que circulam em um contexto real",
         ],
     },
     item6: {
-        title: "Apresenta coerência",
+        title: "Atividades pedagógicas para ampliação do repertório didático",
         data: [
-            "6.1- Premissas epistemológicas do processo de alfabetização do CNCA",
-            "6.2- Diretrizes Nacionais da Educação Básica",
-            "6.3- Diretrizes curriculares do território",
+            "6.1- Prevê oficinas e/ou outras atividades semelhantes voltadas para as práticas pedagógicas",
+            "6.2- Prevê estratégias colaborativas para refletir sobre atividades práticas em sala de aula",
+            "6.3- Prevê visibilidade às diferentes realidades do cotidiano escolar para refletir, avaliar e trocar experiências entre pares",
+            "6.4- Prevê a elaboração individual e/ou coletiva de instrumentos de trabalho pedagógico: Projetos didáticos",
+            "6.5- Prevê a elaboração individual e/ou coletiva de instrumentos de trabalho pedagógico: Sequências didáticas",
+            "6.6- Prevê a elaboração individual e/ou coletiva de instrumentos de trabalho pedagógico: Pautas de reunião",
+            "6.7- Prevê a elaboração individual e/ou coletiva de instrumentos de trabalho pedagógico: Instrumentos de observação",
+            "6.8- Prevê a elaboração individual e/ou coletiva de instrumentos de trabalho pedagógico: Registro da prática",
+            "6.9- Prevê a elaboração individual e/ou coletiva de instrumentos de trabalho pedagógico: Jogos pedagógicos inéditos",
+            "6.10- Prevê a elaboração individual e/ou coletiva de instrumentos de trabalho pedagógico: Recursos pedagógicos inéditos",
+            "6.11- Prevê a elaboração individual e/ou coletiva de instrumentos de trabalho pedagógico: Outros",
         ],
     },
     item7: {
-        title: "Apresenta a diversidade de abordagens teóricas em alfabetização e letramento",
+        title: "As atividades preveem a discussão e proposição de materiais, recursos e instrumentos acessíveis na perspectiva",
         data: [
-            "7.1- Apresenta histórico sobre o conceito de alfabetização e embasamento teórico das metodologias de ensino",
-            "7.2- Fundamenta a escolha epistemológica que embasa os processos de alfabetização",
-            "7.3- Apresenta e compara as definições de literacia, letramento e multiletramentos",
-            "7.4- Apresenta reflexões e proposições sobre a alfabetização, na perspectiva do letramento, no contexto inclusivo, no âmbito da: Educação Especial",
-            "7.5- Apresenta reflexões e proposições sobre a alfabetização, na perspectiva do letramento, no contexto inclusivo, no âmbito da: Educação do Campo",
-            "7.6- Apresenta reflexões e proposições sobre a alfabetização, na perspectiva do letramento, no contexto inclusivo, no âmbito da: Educação Indígena",
+            "7.1- Adaptativa contemplando cada deficiência e/ou TEA",
+            "7.2- Desenho Universal para as aprendizagens",
         ],
     },
     item8: {
-        title: "Aponta as concepções sobre o papel do professor e do estudante no processo de ensino e aprendizagem",
+        title: "Estratégias didáticas para o acompanhamento das aprendizagens dos profissionais da Educação",
         data: [
-            "8.1- Papel protagonista do professor",
-            "8.2- Papel ativo do estudante, sujeito cognoscente",
-            "8.3- Relação dialógica entre professor e estudante",
-            "8.4- Outras concepções sobre o papel do professor e do estudante e relação pedagógica",
+            "8.1- No decorrer do processo formativo privilegiam momentos de reflexão individual",
+            "8.2- No decorrer do processo formativo privilegiam momentos de reflexão por meio de uma avaliação coletiva",
+            "8.3- Registros sobre as percepções dos encontros formativos",
+            "8.4- Registros indicativos de próximas temáticas a serem discutidas",
+            "8.5- Momentos coletivos para compartilhar as experiências do processo formativo",
+            "8.6- Autoavaliação",
+            "8.7- Outras estratégias",
         ],
     },
     item9: {
-        title: "Apresenta e analisa os tipos de avaliações e fundamenta a correlação de cada uma com as tomadas de decisões pedagógicas",
+        title: "Cronograma para o retorno dos feedbacks",
         data: [
-            "9.1- Diagnóstica",
-            "9.2- Somativa ou classificatória",
-            "9.3- Formativa ou qualitativa",
-            "9.4- Autoavaliação",
+            "9.1- Semanal",
+            "9.2- Quinzenal",
+            "9.3- Mensal",
+            "9.4- Semestral",
+            "9.5- Ao final de cada módulo",
         ],
     },
     item10: {
-        title: "Reconhece os níveis de avaliação educacional e prevê o uso dos resultados como base para a reorganização dos objetivos de ensino e aprendizagem",
+        title: "Formatos para as devolutivas sobre o processo de aprendizagem dos profissionais da Educação",
         data: [
-            "10.1- Avaliação da aprendizagem",
-            "10.2- Avaliação institucional",
-            "10.3- Avaliação de larga escala",
+            "10.1- Oral",
+            "10.2- Escrito",
+            "10.3- Oral e Escrito",
         ],
     },
     item11: {
-        title: "Coerência dos conteúdos",
+        title: "Formas de registro e de sistematização das aprendizagens dos profissionais da educação",
         data: [
-            "11.1- Apresentam coerência com os objetivos (Geral e de Aprendizagem)",
-            "11.2- Apresentam coerência com a fundamentação teórica",
-            "11.3- Apresentam coerência sistêmica com a proposta curricular e diretrizes estabelecidas pela rede de ensino",
+            "11.1- Produtos individuais",
+            "11.2- Produtos individuais: Diário profissional formativo",
+            "11.3- Produtos individuais: Portfólio",
+            "11.4- Produtos individuais: Outras formas de registro",
+            "11.5- Produtos compartilhados entre os pares",
+            "11.6- Produtos compartilhados entre os pares: Caderno compartilhado de registros",
+            "11.7- Produtos compartilhados entre os pares: Caderno compartilhado de sugestões de práticas pedagógicas e gestão",
+            "11.8- Produtos compartilhados entre os pares: Caderno compartilhado de resenhas de textos, filmes ou outras indicações de ampliação de repertório",
+            "11.9- Produtos compartilhados entre os pares: Coletânea de relatos de práticas ou artigos",
+            "11.10- Produtos compartilhados entre os pares: Coletânea de sequência didáticas e projetos didáticos desenvolvidos pelos profissionais da educação participantes",
+            "11.11- Produtos compartilhados entre os pares: Coletâneas de pautas ou reuniões de formação e de gestão escolar, com comentários analíticos do grupo",
         ],
     },
     item12: {
-        title: "Organização dos conteúdos",
+        title: "Formas de disseminação e compartilhamento das aprendizagens e dos resultados do processo formativo",
         data: [
-            "12.1- Organizado em módulos e unidades",
-            "12.2- Apresentam adequação à carga horária total",
-            "12.3- Prevê uma distribuição equitativa",
+            "12.1- Modalidade: Presencial",
+            "12.2- Modalidade: Virtual",
+            "12.3- Modalidade: Híbrida",
+            "12.4- Modalidade: Não há previsão para a disseminação e compartilhamento das aprendizagens e resultados",
+            "12.5- Os seminários serão realizados contemplando as esferas da federação: Seminários municipais",
+            "12.6- Os seminários serão realizados contemplando as esferas da federação: Seminários regionais",
+            "12.7- Os seminários serão realizados contemplando as esferas da federação: Seminários estaduais",
         ],
     },
     item13: {
-        title: "Conteúdos selecionados estão alinhados",
+        title: "Previsão de formatos para a disseminação e compartilhamento das aprendizagens consolidades",
         data: [
-            "13.1- As premissas epistemológicas do processo de alfabetização do CNCA",
-            "13.2- As Diretrizes Nacionais da Educação Básica",
-            "13.3- As Diretrizes curriculares do território",
+            "13.1- Painéis",
+            "13.2- Grupos de discussão",
+            "13.3- Oficinas",
+            "13.4- Debates",
+            "13.5- Mesas Temáticas",
+            "13.6- Conferências",
+            "13.7- Outros formatos",
         ],
     },
     item14: {
-        title: "Os conteúdos contemplam as concepções de alfabetização e letramento",
+        title: "A análise dos Livros Didáticos objetiva",
         data: [
-            "14.1- Indicam o reconhecimento da alfabetização como direito constituído para todos os estudantes numa perspectiva inclusiva",
-            "14.2- Indicam o reconhecimento que toda criança é capaz de aprender. Entende o estudante como um sujeito cognoscente e deve ser apoiado em suas necessidades",
-            "14.3- Indicam o reconhecimento da alfabetização como processo discursivo e de caráter enunciativo",
-            "14.4- Indicam o reconhecimento dos aspectos centrais no processo de ensino e aprendizagem: afetividade",
-            "14.5- Indicam o reconhecimento dos aspectos centrais no processo de ensino e aprendizagem: ludicidade",
-            "14.6- Indicam o reconhecimento dos aspectos centrais no processo de ensino e aprendizagem: intencionalidade pedagógica",
-        ],
-    },
-    item15: {
-        title: "Os conteúdos elencados contemplam as temáticas",
-        data: [
-            "15.1- Práticas de linguagem: Oralidade, Leitura e escuta, Escrita/produção de texto, Análise linguística/semiótica",
-            "15.2- Compreensão do Sistema de Escrita Alfabética",
-            "15.3- Compreensão da Consciência Fonológica",
-            "15.4- Sinalizam a apropriação da leitura e da escrita atrelado ao uso competente nas práticas sociais e a diversidade de gêneros discursivos",
-            "15.5- A formação de leitor competente, a mobilização das estratégias cognitivas de leitura: objetiva, inferencial e avaliativa",
-            "15.6- A escrita/produção de textos orais e escritos",
-            "15.7- A análise linguística/semiótica: Reflexões conceituais e didáticas a partir da perspectiva dos multiletramentos",
-            "15.8- Preveem articulação conceitual e práticas pedagógicas entre a alfabetização, letramento e ludicidade",
-            "15.9- Abordam questões sobre a identidade, necessidades e características linguístico-culturais de crianças que não têm o português como língua materna",
-            "15.10- Preveem reflexões e proposições sobre a alfabetização e letramento no contexto inclusivo, no âmbito da: Educação Especial",
-            "15.11- Preveem reflexões e proposições sobre a alfabetização e letramento no contexto inclusivo, no âmbito da: Educação do Campo",
-            "15.12- Preveem reflexões e proposições sobre a alfabetização e letramento no contexto inclusivo, no âmbito da: Educação Indígena",
-        ],
-    },
-    item16: {
-        title: "Os conteúdos contemplam a temática da avaliação e fundamenta a correlação de cada uma com as tomadas de decisões pedagógicas",
-        data: [
-            "16.1- Diagnóstica",
-            "16.2- Somativa ou classificatória",
-            "16.3- Formativa ou qualitativa",
-            "16.4- Autoavaliação",
-        ],
-    },
-    item17: {
-        title: "Apresentam os níveis de avaliação educacional e preveem o uso dos resultados como base para a reorganização dos objetivos de ensino e aprendizagem",
-        data: [
-            "17.1- Avaliação da aprendizagem",
-            "17.2- Avaliação institucional",
-            "17.3- Avaliação de larga escala",
+            "14.1- Verificar a consonância com os referenciais curriculares dos territórios",
+            "14.2- Identificar a conformidade com a perspectiva inclusiva",
+            "14.3- Analisar se a proposta reconhece a alfabetização como processo discursivo",
+            "14.4- Discutir o protagonismo docente para selecionar e adaptar os temas e as atividades propostas nos livros de acordo com as necessidades dos estudantes",
+            "14.5- Refletir sobre o planejamento e criação de atividades complementares que estimulem a reflexão e o debate",
         ],
     },
 };
@@ -227,120 +206,105 @@ const calculateScore = (
     switch (itemName) {
         case "item1":
             if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length <= 4) return 0.25;
-            if (selectedOptions.length <= 7) return 0.5;
-            if (selectedOptions.length < 11) return 0.75;
-            if (selectedOptions.length === 11) return 1;
-            return 0;
-        case "item2":
-            if (selectedOptions.includes("2.3- Não apresenta experiência em alfabetização e letramento")) return 0;
-            if (selectedOptions.length === 1) return 0.75;
-            if (selectedOptions.length === 2) return 1;
-            return 0;
-        case "item3":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length <= 2) return 0.25;
+            if (selectedOptions.length === 1) return 0.25;
             if (selectedOptions.length <= 3) return 0.5;
             if (selectedOptions.length <= 5) return 0.75;
             if (selectedOptions.length === 6) return 1;
             return 0;
+        case "item2":
+            if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.length === 1) return 0.25;
+            if (selectedOptions.length <= 3) return 0.5;
+            if (selectedOptions.length <= 5) return 0.75;
+            if (selectedOptions.length === 6) return 1;
+            return 0;
+        case "item3":
+            if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.length === 1) return 0.25;
+            if (selectedOptions.length <= 4) return 0.5;
+            if (selectedOptions.length <= 7) return 0.75;
+            if (selectedOptions.length === 9) return 1;
+            return 0;
         case "item4":
             if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length <= 2) return 0.25;
+            if (selectedOptions.length === 1) return 0.25;
             if (selectedOptions.length <= 3) return 0.5;
             if (selectedOptions.length <= 5) return 0.75;
             if (selectedOptions.length === 6) return 1;
             return 0;
         case "item5":
             if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length <= 3) return 0.25;
-            if (selectedOptions.length <= 6) return 0.5;
-            if (selectedOptions.length < 10) return 0.75;
-            if (selectedOptions.length === 10) return 1;
-            return 0;
-        case "item6":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length === 2) return 0.75;
-            if (selectedOptions.includes("6.1- Premissas epistemológicas do processo de alfabetização do CNCA")) return 0.5;
-            if (selectedOptions.length === 3) return 1;
-            return 0;
-        case "item7":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length <= 2) return 0.25;
-            if (selectedOptions.length <= 3) return 0.5;
-            if (selectedOptions.length < 6) return 0.75;
-            if (selectedOptions.length === 6) return 1;
-            return 0;
-        case "item8":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length === 1) return 0.25;
-            if (selectedOptions.length <= 2) return 0.5;
-            if (selectedOptions.length <= 3) return 0.75;
-            if (selectedOptions.length === 4) return 1;
-            return 0;
-        case "item9":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length === 1) return 0.25;
-            if (selectedOptions.length <= 2) return 0.5;
-            if (selectedOptions.length <= 3) return 0.75;
-            if (selectedOptions.length === 4) return 1;
-            return 0;
-        case "item10":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length === 1) return 0.5;
-            if (selectedOptions.length === 2) return 0.75;
-            if (selectedOptions.length === 3) return 1;
-            return 0;
-        case "item11":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length === 1) return 0.5;
-            if (selectedOptions.length === 2) return 0.75;
-            if (selectedOptions.length === 3) return 1;
-            return 0;
-        case "item12":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length === 1) return 0.5;
-            if (selectedOptions.length === 2) return 0.75;
-            if (selectedOptions.length === 3) return 1;
-            return 0;
-        case "item13":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length === 1) return 0.5;
-            if (selectedOptions.length === 2) return 0.75;
-            if (selectedOptions.length === 3) return 1;
-            return 0;
-        case "item14":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length === 1) return 0.5;
-            if (selectedOptions.length < 6) return 0.75;
-            if (selectedOptions.length === 6) return 1;
-            return 0;
-        case "item15":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length === 1) return 0.25;
-            if (selectedOptions.length <= 5) return 0.5;
-            if (selectedOptions.length < 9) return 0.75;
-            if (selectedOptions.length === 12) return 1;
-            return 0;
-        case "item16":
-            if (selectedOptions.length === 0) return 0;
             if (selectedOptions.length === 1) return 0.25;
             if (selectedOptions.length === 2) return 0.5;
             if (selectedOptions.length === 3) return 0.75;
             if (selectedOptions.length === 4) return 1;
             return 0;
-        case "item17":
+        case "item6":
             if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length === 1) return 0.5;
-            if (selectedOptions.length === 2) return 0.75;
-            if (selectedOptions.length === 3) return 1;
+            if (selectedOptions.length === 1) return 0.25;
+            if (selectedOptions.length <= 5) return 0.5;
+            if (selectedOptions.length <= 10) return 0.75;
+            if (selectedOptions.length === 11) return 1;
+            return 0;
+        case "item7":
+            if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.length === 1) return 0.75;
+            if (selectedOptions.length === 2) return 1;
+            return 0;
+        case "item8":
+            if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.length === 1) return 0.25;
+            if (selectedOptions.length <= 3) return 0.5;
+            if (selectedOptions.length <= 6) return 0.75;
+            if (selectedOptions.length === 7) return 1;
+            return 0;
+        case "item9":
+            if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.includes("9.4- Semestral")) return 0.25;
+            if (selectedOptions.includes("9.3- Mensal") || selectedOptions.includes("9.5")) return 0.5;
+            if (selectedOptions.includes("9.2- Quinzenal")) return 0.75;
+            if (selectedOptions.includes("9.1- Semanal")) return 1;
+            return 0;
+        case "item10":
+            if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.includes("10.1- Oral") && selectedOptions.includes("10.2- Escrito") && selectedOptions.includes("10.3- Oral e Escrito")) return 1;
+            if (selectedOptions.includes("10.1- Oral") && selectedOptions.includes("10.2- Escrito")) return 0.75;
+            if (selectedOptions.includes("10.1- Oral") || selectedOptions.includes("10.2- Escrito")) return 0.5;
+            return 0;
+        case "item11":
+            if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.length <= 3) return 0.25;
+            if (selectedOptions.length <= 5) return 0.5;
+            if (selectedOptions.length <= 9) return 0.75;
+            if (selectedOptions.length === 11) return 1;
+            return 0;
+        case "item12":
+            if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.length === 1) return 0.25;
+            if (selectedOptions.length <= 4) return 0.5;
+            if (selectedOptions.length <= 7) return 0.75;
+            if (selectedOptions.length === 8) return 1;
+            return 0;
+        case "item13":
+            if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.length <= 2) return 0.25;
+            if (selectedOptions.length <= 4) return 0.5;
+            if (selectedOptions.length <= 7) return 0.75;
+            if (selectedOptions.length === 8) return 1;
+            return 0;
+        case "item14":
+            if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.length === 1) return 0.25;
+            if (selectedOptions.length <= 3) return 0.5;
+            if (selectedOptions.length <= 4) return 0.75;
+            if (selectedOptions.length === 5) return 1;
             return 0;
         default:
             return 0;
     }
 };
 
-export function D2FirstModule() {
+export function D2SecondModule() {
     const [scoreItem1, setScoreItem1] = useState(0);
     const [scoreItem2, setScoreItem2] = useState(0);
     const [scoreItem3, setScoreItem3] = useState(0);
@@ -355,14 +319,11 @@ export function D2FirstModule() {
     const [scoreItem12, setScoreItem12] = useState(0);
     const [scoreItem13, setScoreItem13] = useState(0);
     const [scoreItem14, setScoreItem14] = useState(0);
-    const [scoreItem15, setScoreItem15] = useState(0);
-    const [scoreItem16, setScoreItem16] = useState(0);
-    const [scoreItem17, setScoreItem17] = useState(0);
     const [finalResult, setFinalResult] = useState(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const pdfRef = useRef<HTMLFormElement>(null);
 
-    const savedFormData = JSON.parse(localStorage.getItem("d2m1") || "{}");
+    const savedFormData = JSON.parse(localStorage.getItem("d2m2") || "{}");
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -381,20 +342,17 @@ export function D2FirstModule() {
             item12: savedFormData.item12 || [],
             item13: savedFormData.item13 || [],
             item14: savedFormData.item14 || [],
-            item15: savedFormData.item15 || [],
-            item16: savedFormData.item16 || [],
-            item17: savedFormData.item17 || [],
         },
     });
 
     useEffect(() => {
         form.watch((value) => {
-            localStorage.setItem("d2m1", JSON.stringify(value));
+            localStorage.setItem("d2m2", JSON.stringify(value));
         });
     }, [form, form.watch]);
 
     useEffect(() => {
-        const { item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17 } = savedFormData;
+        const { item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14 } = savedFormData;
         setScoreItem1(calculateScore("item1", item1 || []));
         setScoreItem2(calculateScore("item2", item2 || []));
         setScoreItem3(calculateScore("item3", item3 || []));
@@ -409,9 +367,6 @@ export function D2FirstModule() {
         setScoreItem12(calculateScore("item12", item12 || []));
         setScoreItem13(calculateScore("item13", item13 || []));
         setScoreItem14(calculateScore("item14", item14 || []));
-        setScoreItem15(calculateScore("item15", item15 || []));
-        setScoreItem16(calculateScore("item16", item16 || []));
-        setScoreItem17(calculateScore("item17", item17 || []));
     }, [savedFormData]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -424,17 +379,17 @@ export function D2FirstModule() {
         return (checked: boolean) => {
             let newValue;
 
-            if (
-                (itemName === "item2" && value === "2.3- Não apresenta experiência em alfabetização e letramento")
-            ) {
+            if (itemName === "item9") {
                 newValue = checked ? [value] : [];
-            } else {
+            }
+            else {
+                // eslint-disable-next-line prefer-const
                 newValue = checked
                     ? [...field.value, value]
                     : field.value.filter((v: string) => v !== value);
 
-                if (itemName === "item2" && newValue.includes("2.3- Não apresenta experiência em alfabetização e letramento")) {
-                    newValue = ["2.3- Não apresenta experiência em alfabetização e letramento"];
+                if (itemName === "item10" && value === "10.3- Oral e Escrito" && checked) {
+                    newValue = ["10.1- Oral", "10.2- Escrito", "10.3- Oral e Escrito"]
                 }
             }
 
@@ -485,15 +440,6 @@ export function D2FirstModule() {
                 case "item14":
                     setScoreItem14(score);
                     break;
-                case "item15":
-                    setScoreItem15(score);
-                    break;
-                case "item16":
-                    setScoreItem16(score);
-                    break;
-                case "item17":
-                    setScoreItem17(score);
-                    break;
                 default:
                     break;
             }
@@ -516,11 +462,8 @@ export function D2FirstModule() {
                 scoreItem11 +
                 scoreItem12 +
                 scoreItem13 +
-                scoreItem14 +
-                scoreItem15 +
-                scoreItem16 +
-                scoreItem17) /
-            17
+                scoreItem14) /
+            14
         );
 
         setTimeout(() => {
@@ -534,6 +477,7 @@ export function D2FirstModule() {
         onAfterPrint: () => alert('Download realizado com sucesso!')
     });
 
+
     return (
         <Card>
             <CardHeader />
@@ -541,7 +485,7 @@ export function D2FirstModule() {
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="flex flex-col gap-4"
+                        className="flex flex-col gap-4 p-4"
                         ref={pdfRef}
                     >
                         {Object.keys(formSchema.shape).map((itemName) => (
@@ -583,12 +527,6 @@ export function D2FirstModule() {
                                                         return scoreItem13;
                                                     case "item14":
                                                         return scoreItem14;
-                                                    case "item15":
-                                                        return scoreItem15;
-                                                    case "item16":
-                                                        return scoreItem16;
-                                                    case "item17":
-                                                        return scoreItem17;
                                                     default:
                                                         return 0;
                                                 }
@@ -687,15 +625,6 @@ export function D2FirstModule() {
                                     <div>
                                         {`Item-14: ${formatValue(scoreItem14, { decimalPlace: 2 })}`}
                                     </div>
-                                    <div>
-                                        {`Item-15: ${formatValue(scoreItem15, { decimalPlace: 2 })}`}
-                                    </div>
-                                    <div>
-                                        {`Item-16: ${formatValue(scoreItem16, { decimalPlace: 2 })}`}
-                                    </div>
-                                    <div>
-                                        {`Item-17: ${formatValue(scoreItem17, { decimalPlace: 2 })}`}
-                                    </div>
                                     <h1>Cálculo Resultado Final:</h1>
                                     <div>
                                         {`(${formatValue(scoreItem1, {
@@ -726,16 +655,11 @@ export function D2FirstModule() {
                                             decimalPlace: 2,
                                         })} + ${formatValue(scoreItem14, {
                                             decimalPlace: 2,
-                                        })} + ${formatValue(scoreItem15, {
-                                            decimalPlace: 2,
-                                        })} + ${formatValue(scoreItem16, {
-                                            decimalPlace: 2,
-                                        })} + ${formatValue(scoreItem17, {
-                                            decimalPlace: 2,
-                                        })}) / 17 = ${formatValue(finalResult, {
+                                        })}) / 14 = ${formatValue(finalResult, {
                                             decimalPlace: 2,
                                         })}`}
                                     </div>
+
                                     <Button type="button" onClick={downloadPDF}>
                                         Baixar PDF
                                     </Button>
