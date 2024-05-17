@@ -120,7 +120,9 @@ const items = {
             "7.1- Apresenta histórico sobre o conceito de alfabetização e embasamento teórico das metodologias de ensino",
             "7.2- Fundamenta a escolha epistemológica que embasa os processos de alfabetização",
             "7.3- Apresenta e compara as definições de literacia, letramento e multiletramentos",
-            "7.4- Apresenta reflexões e proposições sobre a alfabetização, na perspectiva do letramento, no contexto inclusivo, no âmbito da Educação Especial, Educação do Campo, Educação Indígena",
+            "7.4- Apresenta reflexões e proposições sobre a alfabetização, na perspectiva do letramento, no contexto inclusivo, no âmbito da: Educação Especial",
+            "7.5- Apresenta reflexões e proposições sobre a alfabetização, na perspectiva do letramento, no contexto inclusivo, no âmbito da: Educação do Campo",
+            "7.6- Apresenta reflexões e proposições sobre a alfabetização, na perspectiva do letramento, no contexto inclusivo, no âmbito da: Educação Indígena",
         ],
     },
     item8: {
@@ -179,7 +181,9 @@ const items = {
             "14.1- Indicam o reconhecimento da alfabetização como direito constituído para todos os estudantes numa perspectiva inclusiva",
             "14.2- Indicam o reconhecimento que toda criança é capaz de aprender. Entende o estudante como um sujeito cognoscente e deve ser apoiado em suas necessidades",
             "14.3- Indicam o reconhecimento da alfabetização como processo discursivo e de caráter enunciativo",
-            "14.4- Indicam o reconhecimento dos aspectos centrais no processo de ensino e aprendizagem: afetividade, ludicidade, intencionalidade pedagógica",
+            "14.4- Indicam o reconhecimento dos aspectos centrais no processo de ensino e aprendizagem: afetividade",
+            "14.5- Indicam o reconhecimento dos aspectos centrais no processo de ensino e aprendizagem: ludicidade",
+            "14.6- Indicam o reconhecimento dos aspectos centrais no processo de ensino e aprendizagem: intencionalidade pedagógica",
         ],
     },
     item15: {
@@ -194,7 +198,9 @@ const items = {
             "15.7- A análise linguística/semiótica: Reflexões conceituais e didáticas a partir da perspectiva dos multiletramentos",
             "15.8- Preveem articulação conceitual e práticas pedagógicas entre a alfabetização, letramento e ludicidade",
             "15.9- Abordam questões sobre a identidade, necessidades e características linguístico-culturais de crianças que não têm o português como língua materna",
-            "15.10- Preveem reflexões e proposições sobre a alfabetização e letramento no contexto inclusivo, no âmbito da Educação Especial, Educação do Campo, Educação Indígena",
+            "15.10- Preveem reflexões e proposições sobre a alfabetização e letramento no contexto inclusivo, no âmbito da: Educação Especial",
+            "15.11- Preveem reflexões e proposições sobre a alfabetização e letramento no contexto inclusivo, no âmbito da: Educação do Campo",
+            "15.12- Preveem reflexões e proposições sobre a alfabetização e letramento no contexto inclusivo, no âmbito da: Educação Indígena",
         ],
     },
     item16: {
@@ -264,60 +270,73 @@ const calculateScore = (
             if (selectedOptions.length === 0) return 0;
             if (selectedOptions.length <= 2) return 0.25;
             if (selectedOptions.length <= 3) return 0.5;
-            if (selectedOptions.length === 4) return 0.75;
-            return 1;
+            if (selectedOptions.length < 6) return 0.75;
+            if (selectedOptions.length === 6) return 1;
+            return 0;
         case "item8":
             if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length <= 2) return 0.25;
-            if (selectedOptions.length <= 3) return 0.5;
-            if (selectedOptions.length === 4) return 0.75;
-            return 1;
+            if (selectedOptions.length === 1) return 0.25;
+            if (selectedOptions.length <= 2) return 0.5;
+            if (selectedOptions.length <= 3) return 0.75;
+            if (selectedOptions.length === 4) return 1;
+            return 0;
         case "item9":
             if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length <= 2) return 0.25;
-            if (selectedOptions.length <= 3) return 0.5;
-            return 1;
+            if (selectedOptions.length === 1) return 0.25;
+            if (selectedOptions.length <= 2) return 0.5;
+            if (selectedOptions.length <= 3) return 0.75;
+            if (selectedOptions.length === 4) return 1;
+            return 0;
         case "item10":
             if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length <= 1) return 0.25;
-            if (selectedOptions.length <= 2) return 0.5;
-            return 1;
+            if (selectedOptions.length === 1) return 0.5;
+            if (selectedOptions.length === 2) return 0.75;
+            if (selectedOptions.length === 3) return 1;
+            return 0;
         case "item11":
             if (selectedOptions.length === 0) return 0;
             if (selectedOptions.length === 1) return 0.5;
             if (selectedOptions.length === 2) return 0.75;
-            return 1;
+            if (selectedOptions.length === 3) return 1;
+            return 0;
         case "item12":
             if (selectedOptions.length === 0) return 0;
             if (selectedOptions.length === 1) return 0.5;
             if (selectedOptions.length === 2) return 0.75;
-            return 1;
+            if (selectedOptions.length === 3) return 1;
+            return 0;
         case "item13":
             if (selectedOptions.length === 0) return 0;
             if (selectedOptions.length === 1) return 0.5;
             if (selectedOptions.length === 2) return 0.75;
-            return 1;
+            if (selectedOptions.length === 3) return 1;
+            return 0;
         case "item14":
+            if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.length === 1) return 0.5;
+            if (selectedOptions.length < 6) return 0.75;
+            if (selectedOptions.length === 6) return 1;
+            return 0;
+        case "item15":
+            if (selectedOptions.length === 0) return 0;
+            if (selectedOptions.length === 1) return 0.25;
+            if (selectedOptions.length <= 5) return 0.5;
+            if (selectedOptions.length < 9) return 0.75;
+            if (selectedOptions.length === 12) return 1;
+            return 0;
+        case "item16":
             if (selectedOptions.length === 0) return 0;
             if (selectedOptions.length === 1) return 0.25;
             if (selectedOptions.length === 2) return 0.5;
             if (selectedOptions.length === 3) return 0.75;
-            return 1;
-        case "item15":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length <= 1) return 0.25;
-            if (selectedOptions.length <= 5) return 0.5;
-            if (selectedOptions.length <= 9) return 0.75;
-            return 1;
-        case "item16":
-            if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length <= 1) return 0.25;
-            if (selectedOptions.length <= 3) return 0.5;
-            return 1;
+            if (selectedOptions.length === 4) return 1;
+            return 0;
         case "item17":
             if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.length <= 1) return 0.5;
-            return 1;
+            if (selectedOptions.length === 1) return 0.5;
+            if (selectedOptions.length === 2) return 0.75;
+            if (selectedOptions.length === 3) return 1;
+            return 0;
         default:
             return 0;
     }
