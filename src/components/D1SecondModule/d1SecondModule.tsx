@@ -478,6 +478,9 @@ export function D1SecondModule() {
         <Card>
             <CardHeader />
             <CardContent>
+                <div className="flex w-full justify-end">
+                    <Button onClick={() => { localStorage.removeItem("d1m1"); form.reset() }}>Limpar formulário</Button>
+                </div>
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
