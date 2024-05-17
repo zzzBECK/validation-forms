@@ -509,9 +509,9 @@ export function D1SecondModule({ state }: Props) {
 
     return (
         <Card ref={pdfRef}>
-            <CardHeader className="flex flex-row justify-between items-center">
-                <h1 className="flex w-fit text-6xl">{state}</h1>
-                <div className="w-fit" >
+            <CardHeader className="flex flex-col md:flex-row justify-between md:items-center">
+                <h1 className="flex w-fit text-5xl md:text-6xl">{state}</h1>
+                <div className="w-fit md:mt-0" >
                     <Button onClick={handleResetForm}>Limpar formulário</Button>
                 </div>
             </CardHeader>
