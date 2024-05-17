@@ -4,6 +4,7 @@ import { D2SecondModule } from "./components/D1SecondModule/d1SecondModule";
 import { D2FirstModule } from "./components/D2FirstModule/d2FirstModule";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
+import { ModeToggle } from "./components/mode-toggle";
 
 function App() {
   const [dimension, setDimension] = useState<string>();
@@ -11,17 +12,20 @@ function App() {
   return (
     <main className="flex flex-col items-center w-screen min-h-screen container contain py-10">
 
-      <Select onValueChange={(value) => setDimension(value)}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a dimensão" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectItem value="d1">Dimensão 1</SelectItem>
-            <SelectItem value="d2">Dimensão 2</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <div className="flex w-full gap-4">
+        <Select onValueChange={(value) => setDimension(value)}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a dimensão" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="d1">Dimensão 1</SelectItem>
+              <SelectItem value="d2">Dimensão 2</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <ModeToggle />
+      </div>
 
       {dimension === "d1" &&
         <Tabs defaultValue="d1FirstModule" className="w-full pt-10">
