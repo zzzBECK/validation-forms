@@ -7,6 +7,7 @@ import { ModeToggle } from "./components/mode-toggle";
 import { Card, CardContent } from "./components/ui/card";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
+import { EF1 } from "./components/EF1/ef1";
 
 const states = [
   { abbreviation: "AC", name: "Acre" },
@@ -54,6 +55,7 @@ function App() {
             <SelectGroup>
               <SelectItem value="d1">DIMENSÃO 1: ARQUITETURA INSTITUCIONAL DO PROGRAMA DE FORMAÇÃO</SelectItem>
               <SelectItem value="d2">{"DIMENSÃO 2: Aspectos metodológicos privilegiados na formação continuada".toUpperCase()}</SelectItem>
+              <SelectItem value="d3">{"Educação Infantil".toUpperCase()}</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -108,6 +110,21 @@ function App() {
               </TabsContent>
               <TabsContent value="d2SecondModule">
                 <D2SecondModule state={state} />
+              </TabsContent>
+            </Tabs>}
+
+          {dimension === "d3" &&
+            <Tabs defaultValue="ef1" className="w-full h-fit pt-10">
+              <TabsList className="flex flex-col md:flex-row gap-4 w-full">
+                <TabsTrigger className="w-full" value="ef1">
+                  CATEGORIA: ORGANIZAÇÃO DO PERCURSO FORMATIVO, OFERTA E CONDIÇÕES
+                </TabsTrigger>
+                <TabsTrigger className="w-full" value="d2SecondModule">
+                  CONTEÚDOS FORMATIVOS
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="ef1">
+                <EF1 state={state} />
               </TabsContent>
             </Tabs>}
         </>
