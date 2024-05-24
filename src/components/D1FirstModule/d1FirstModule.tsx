@@ -462,15 +462,10 @@ export function D1FirstModule({ state }: Props) {
                             <Button type="submit" className="no-print">Calcular</Button>
                         )}
                         {isLoading ? (
-                            <div className="flex flex-col gap-4" >
-                                <Skeleton className="w-1/6 h-8" />
-                                <Skeleton className="w-1/6 h-8" />
-                                <Skeleton className="w-1/6 h-8" />
-                                <Skeleton className="w-1/6 h-8" />
-                                <Skeleton className="w-1/6 h-8" />
-                                <Skeleton className="w-1/6 h-8" />
-                                <Skeleton className="w-1/6 h-8" />
-                                <Skeleton className="w-2/6 h-8" />
+                            <div className="flex flex-col gap-4">
+                                {[...Array(7 - excludedItems.length)].map((_, index) => (
+                                    <Skeleton key={index} className="w-1/6 h-8" />
+                                ))}
                                 <Skeleton className="w-full h-10" />
                             </div>
                         ) : (
