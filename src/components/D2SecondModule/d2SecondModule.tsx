@@ -1,9 +1,9 @@
 import { formatValue } from "@/helpers/formatValue";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useReactToPrint } from 'react-to-print';
+import { useReactToPrint } from "react-to-print";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
@@ -53,7 +53,8 @@ const items: Record<string, { title: string; data: string[] }> = {
         ],
     },
     item2: {
-        title: "O planejamento prevê momentos que privilegiam a “Escuta democrática” como base para a reflexão da prática pedagógica",
+        title:
+            "O planejamento prevê momentos que privilegiam a “Escuta democrática” como base para a reflexão da prática pedagógica",
         data: [
             "2.1- Prevê momentos para apresentar as demandas e necessidades de formação e desenvolvimento profissional",
             "2.2- Apresenta flexibilidade no planejamento do percurso formativo para atender às demandas e necessidades dos cursistas",
@@ -64,7 +65,8 @@ const items: Record<string, { title: string; data: string[] }> = {
         ],
     },
     item3: {
-        title: "Estratégias metodológicas visando à ampliação do repertório profissional",
+        title:
+            "Estratégias metodológicas visando à ampliação do repertório profissional",
         data: [
             "3.1- Contemplam espaços dialógicos entre a prática pedagógica e os conteúdos previstos",
             "3.2- Preveem momentos de reflexão, pesquisa, ação, descoberta, organização, fundamentação e revisão e construção teórica",
@@ -89,7 +91,8 @@ const items: Record<string, { title: string; data: string[] }> = {
         ],
     },
     item5: {
-        title: "As práticas pedagógicas contemplam as concepções teóricos metodológicas indicadas para o ensino da leitura e da escrita das crianças a partir",
+        title:
+            "As práticas pedagógicas contemplam as concepções teóricos metodológicas indicadas para o ensino da leitura e da escrita das crianças a partir",
         data: [
             "5.1- Do reconhecimento do estudante como usuário competente e participante efetivo de práticas sociais que envolvem a leitura e a escrita",
             "5.2- Da construção de leitores ativos que percebem a leitura como forma de comunicar significados e de construir ativamente significados nos textos",
@@ -113,14 +116,16 @@ const items: Record<string, { title: string; data: string[] }> = {
         ],
     },
     item7: {
-        title: "As atividades preveem a discussão e proposição de materiais, recursos e instrumentos acessíveis na perspectiva",
+        title:
+            "As atividades preveem a discussão e proposição de materiais, recursos e instrumentos acessíveis na perspectiva",
         data: [
             "7.1- Adaptativa contemplando cada deficiência e/ou TEA",
             "7.2- Desenho Universal para as aprendizagens",
         ],
     },
     item8: {
-        title: "Estratégias didáticas para o acompanhamento das aprendizagens dos profissionais da Educação",
+        title:
+            "Estratégias didáticas para o acompanhamento das aprendizagens dos profissionais da Educação",
         data: [
             "8.1- No decorrer do processo formativo privilegiam momentos de reflexão individual",
             "8.2- No decorrer do processo formativo privilegiam momentos de reflexão por meio de uma avaliação coletiva",
@@ -142,15 +147,13 @@ const items: Record<string, { title: string; data: string[] }> = {
         ],
     },
     item10: {
-        title: "Formatos para as devolutivas sobre o processo de aprendizagem dos profissionais da Educação",
-        data: [
-            "10.1- Oral",
-            "10.2- Escrito",
-            "10.3- Oral e Escrito",
-        ],
+        title:
+            "Formatos para as devolutivas sobre o processo de aprendizagem dos profissionais da Educação",
+        data: ["10.1- Oral", "10.2- Escrito", "10.3- Oral e Escrito"],
     },
     item11: {
-        title: "Formas de registro e de sistematização das aprendizagens dos profissionais da educação",
+        title:
+            "Formas de registro e de sistematização das aprendizagens dos profissionais da educação",
         data: [
             "11.1- Produtos individuais",
             "11.2- Produtos individuais: Diário profissional formativo",
@@ -166,7 +169,8 @@ const items: Record<string, { title: string; data: string[] }> = {
         ],
     },
     item12: {
-        title: "Formas de disseminação e compartilhamento das aprendizagens e dos resultados do processo formativo",
+        title:
+            "Formas de disseminação e compartilhamento das aprendizagens e dos resultados do processo formativo",
         data: [
             "12.1- Modalidade: Presencial",
             "12.2- Modalidade: Virtual",
@@ -175,7 +179,8 @@ const items: Record<string, { title: string; data: string[] }> = {
         ],
     },
     item13: {
-        title: "Formas de disseminação e compartilhamento das aprendizagens e dos resultados do processo formativo",
+        title:
+            "Formas de disseminação e compartilhamento das aprendizagens e dos resultados do processo formativo",
         data: [
             "13.1- Os seminários serão realizados contemplando as esferas da federação: Seminários municipais",
             "13.2- Os seminários serão realizados contemplando as esferas da federação: Seminários regionais",
@@ -184,7 +189,8 @@ const items: Record<string, { title: string; data: string[] }> = {
         ],
     },
     item14: {
-        title: "Previsão de formatos para a disseminação e compartilhamento das aprendizagens consolidadas",
+        title:
+            "Previsão de formatos para a disseminação e compartilhamento das aprendizagens consolidadas",
         data: [
             "14.1- Painéis",
             "14.2- Grupos de discussão",
@@ -269,15 +275,32 @@ const calculateScore = (
         case "item9":
             if (selectedOptions.length === 0) return 0;
             if (selectedOptions.includes("9.4- Semestral")) return 0.25;
-            if (selectedOptions.includes("9.3- Mensal") || selectedOptions.includes("9.5")) return 0.5;
+            if (
+                selectedOptions.includes("9.3- Mensal") ||
+                selectedOptions.includes("9.5")
+            )
+                return 0.5;
             if (selectedOptions.includes("9.2- Quinzenal")) return 0.75;
             if (selectedOptions.includes("9.1- Semanal")) return 1;
             return 0;
         case "item10":
             if (selectedOptions.length === 0) return 0;
-            if (selectedOptions.includes("10.1- Oral") && selectedOptions.includes("10.2- Escrito") && selectedOptions.includes("10.3- Oral e Escrito")) return 1;
-            if (selectedOptions.includes("10.1- Oral") && selectedOptions.includes("10.2- Escrito")) return 0.75;
-            if (selectedOptions.includes("10.1- Oral") || selectedOptions.includes("10.2- Escrito")) return 0.5;
+            if (
+                selectedOptions.includes("10.1- Oral") &&
+                selectedOptions.includes("10.2- Escrito") &&
+                selectedOptions.includes("10.3- Oral e Escrito")
+            )
+                return 1;
+            if (
+                selectedOptions.includes("10.1- Oral") &&
+                selectedOptions.includes("10.2- Escrito")
+            )
+                return 0.75;
+            if (
+                selectedOptions.includes("10.1- Oral") ||
+                selectedOptions.includes("10.2- Escrito")
+            )
+                return 0.5;
             return 0;
         case "item11":
             if (selectedOptions.length === 0) return 0;
@@ -290,13 +313,38 @@ const calculateScore = (
             if (selectedOptions.includes("12.1- Modalidade: Presencial")) return 0.75;
             if (selectedOptions.includes("12.2- Modalidade: Virtual")) return 0.5;
             if (selectedOptions.includes("12.3- Modalidade: Híbrida")) return 1;
-            if (selectedOptions.includes("12.4- Modalidade: Não há previsão para a disseminação e compartilhamento das aprendizagens e resultados")) return 0;
+            if (
+                selectedOptions.includes(
+                    "12.4- Modalidade: Não há previsão para a disseminação e compartilhamento das aprendizagens e resultados"
+                )
+            )
+                return 0;
             return 0;
         case "item13":
-            if (selectedOptions.includes("13.2- Os seminários serão realizados contemplando as esferas da federação: Seminários regionais")) return 0.75;
-            if (selectedOptions.includes("13.1- Os seminários serão realizados contemplando as esferas da federação: Seminários municipais")) return 0.5;
-            if (selectedOptions.includes("13.3- Os seminários serão realizados contemplando as esferas da federação: Seminários estaduais")) return 1;
-            if (selectedOptions.includes("13.4- Modalidade: Não há previsão para a disseminação e compartilhamento das aprendizagens e resultados")) return 0;
+            if (
+                selectedOptions.includes(
+                    "13.2- Os seminários serão realizados contemplando as esferas da federação: Seminários regionais"
+                )
+            )
+                return 0.75;
+            if (
+                selectedOptions.includes(
+                    "13.1- Os seminários serão realizados contemplando as esferas da federação: Seminários municipais"
+                )
+            )
+                return 0.5;
+            if (
+                selectedOptions.includes(
+                    "13.3- Os seminários serão realizados contemplando as esferas da federação: Seminários estaduais"
+                )
+            )
+                return 1;
+            if (
+                selectedOptions.includes(
+                    "13.4- Modalidade: Não há previsão para a disseminação e compartilhamento das aprendizagens e resultados"
+                )
+            )
+                return 0;
             return 0;
         case "item14":
             if (selectedOptions.length === 0) return 0;
@@ -361,7 +409,9 @@ export function D2SecondModule({ state }: Props) {
         excludeItems: [],
     };
 
-    const savedFormData = JSON.parse(localStorage.getItem("d2m2") || "{}");
+    const savedFormData = useMemo(() => {
+        return JSON.parse(localStorage.getItem("d2m2") || "{}");
+    }, []);
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -392,7 +442,24 @@ export function D2SecondModule({ state }: Props) {
     }, [form, form.watch]);
 
     useEffect(() => {
-        const { item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, excludeItems } = savedFormData;
+        const {
+            item1,
+            item2,
+            item3,
+            item4,
+            item5,
+            item6,
+            item7,
+            item8,
+            item9,
+            item10,
+            item11,
+            item12,
+            item13,
+            item14,
+            item15,
+            excludeItems,
+        } = savedFormData;
         setScoreItem1(calculateScore("item1", item1 || []));
         setScoreItem2(calculateScore("item2", item2 || []));
         setScoreItem3(calculateScore("item3", item3 || []));
@@ -421,17 +488,24 @@ export function D2SecondModule({ state }: Props) {
         return (checked: boolean) => {
             let newValue;
 
-            if (itemName === "item9" || itemName === "item12" || itemName === "item13") {
+            if (
+                itemName === "item9" ||
+                itemName === "item12" ||
+                itemName === "item13"
+            ) {
                 newValue = checked ? [value] : [];
-            }
-            else {
+            } else {
                 // eslint-disable-next-line prefer-const
                 newValue = checked
                     ? [...field.value, value]
                     : field.value.filter((v: string) => v !== value);
 
-                if (itemName === "item10" && value === "10.3- Oral e Escrito" && checked) {
-                    newValue = ["10.1- Oral", "10.2- Escrito", "10.3- Oral e Escrito"]
+                if (
+                    itemName === "item10" &&
+                    value === "10.3- Oral e Escrito" &&
+                    checked
+                ) {
+                    newValue = ["10.1- Oral", "10.2- Escrito", "10.3- Oral e Escrito"];
                 }
             }
 
@@ -513,7 +587,7 @@ export function D2SecondModule({ state }: Props) {
         setExcludedItems([]);
     };
 
-    function onSubmit() {
+    const onSubmit = useCallback(() => {
         setIsLoading(true);
 
         const scores = [
@@ -532,7 +606,7 @@ export function D2SecondModule({ state }: Props) {
             !excludedItems.includes("item13") && scoreItem13,
             !excludedItems.includes("item14") && scoreItem14,
             !excludedItems.includes("item15") && scoreItem15,
-        ].filter(score => score !== false) as number[];
+        ].filter((score) => score !== false) as number[];
 
         setFinalResult(
             scores.reduce((sum, score) => sum + score, 0) / scores.length
@@ -541,12 +615,29 @@ export function D2SecondModule({ state }: Props) {
         setTimeout(() => {
             setIsLoading(false);
         }, 2000);
-    }
+    }, [
+        excludedItems,
+        scoreItem1,
+        scoreItem10,
+        scoreItem11,
+        scoreItem12,
+        scoreItem13,
+        scoreItem14,
+        scoreItem15,
+        scoreItem2,
+        scoreItem3,
+        scoreItem4,
+        scoreItem5,
+        scoreItem6,
+        scoreItem7,
+        scoreItem8,
+        scoreItem9,
+    ]);
 
     const downloadPDF = useReactToPrint({
         content: () => pdfRef.current,
         documentTitle: `Dimensão 2 - Categoria 2 - ${state}`,
-        onAfterPrint: () => alert('Download realizado com sucesso!')
+        onAfterPrint: () => alert("Download realizado com sucesso!"),
     });
 
     const handleExcludeChange = (itemName: keyof FormData) => {
@@ -560,13 +651,19 @@ export function D2SecondModule({ state }: Props) {
             }
 
             setExcludedItems(newExcludeItems);
-            form.setValue('excludeItems', newExcludeItems);
+            form.setValue("excludeItems", newExcludeItems);
 
             if (finalResult !== 0) {
                 onSubmit();
             }
         };
     };
+
+    useEffect(() => {
+        if (finalResult !== 0) {
+            onSubmit();
+        }
+    }, [excludedItems, finalResult, onSubmit]);
 
     return (
         <Card ref={pdfRef}>
@@ -584,7 +681,7 @@ export function D2SecondModule({ state }: Props) {
                     >
                         {Object.keys(items).map((itemName) => (
                             <FormField
-                                key={items[itemName].title}
+                                key={items[itemName].data[0]}
                                 control={form.control}
                                 name={itemName as keyof FormData}
                                 render={({ field }) => (
@@ -632,33 +729,35 @@ export function D2SecondModule({ state }: Props) {
                                             <label className="flex items-center space-x-2">
                                                 <Checkbox
                                                     checked={excludedItems.includes(itemName)}
-                                                    onCheckedChange={handleExcludeChange(itemName as keyof FormData)}
+                                                    onCheckedChange={handleExcludeChange(
+                                                        itemName as keyof FormData
+                                                    )}
                                                 />
                                                 <span>Desconsiderar</span>
                                             </label>
                                         </div>
                                         <FormControl>
                                             <div className="flex flex-col gap-2">
-                                                {items[itemName].data.map(
-                                                    (value, idx) => (
-                                                        <label
-                                                            key={idx}
-                                                            className={`flex items-center space-x-2 ${excludedItems.includes(itemName) ? 'opacity-50' : ''
-                                                                }`}
-                                                        >
-                                                            <Checkbox
-                                                                checked={field.value.includes(value)}
-                                                                onCheckedChange={handleCheckboxChange(
-                                                                    field,
-                                                                    itemName as keyof FormData,
-                                                                    value
-                                                                )}
-                                                                disabled={excludedItems.includes(itemName)}
-                                                            />
-                                                            <span>{value}</span>
-                                                        </label>
-                                                    )
-                                                )}
+                                                {items[itemName].data.map((value, idx) => (
+                                                    <label
+                                                        key={idx}
+                                                        className={`flex items-center space-x-2 ${excludedItems.includes(itemName)
+                                                                ? "opacity-50"
+                                                                : ""
+                                                            }`}
+                                                    >
+                                                        <Checkbox
+                                                            checked={field.value.includes(value)}
+                                                            onCheckedChange={handleCheckboxChange(
+                                                                field,
+                                                                itemName as keyof FormData,
+                                                                value
+                                                            )}
+                                                            disabled={excludedItems.includes(itemName)}
+                                                        />
+                                                        <span>{value}</span>
+                                                    </label>
+                                                ))}
                                             </div>
                                         </FormControl>
                                         <Separator />
@@ -673,7 +772,9 @@ export function D2SecondModule({ state }: Props) {
                                 Calculando
                             </Button>
                         ) : (
-                            <Button type="submit" className="no-print">Calcular</Button>
+                            <Button type="submit" className="no-print">
+                                Calcular
+                            </Button>
                         )}
                         {isLoading ? (
                             <div className="flex flex-col gap-4">
@@ -685,75 +786,157 @@ export function D2SecondModule({ state }: Props) {
                         ) : (
                             finalResult !== 0 && (
                                 <>
-                                    {!excludedItems.includes("item1") && <div>
-                                        {`Item-1: ${formatValue(scoreItem1, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item2") && <div>
-                                        {`Item-2: ${formatValue(scoreItem2, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item3") && <div>
-                                        {`Item-3: ${formatValue(scoreItem3, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item4") && <div>
-                                        {`Item-4: ${formatValue(scoreItem4, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item5") && <div>
-                                        {`Item-5: ${formatValue(scoreItem5, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item6") && <div>
-                                        {`Item-6: ${formatValue(scoreItem6, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item7") && <div>
-                                        {`Item-7: ${formatValue(scoreItem7, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item8") && <div>
-                                        {`Item-8: ${formatValue(scoreItem8, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item9") && <div>
-                                        {`Item-9: ${formatValue(scoreItem9, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item10") && <div>
-                                        {`Item-10: ${formatValue(scoreItem10, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item11") && <div>
-                                        {`Item-11: ${formatValue(scoreItem11, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item12") && <div>
-                                        {`Item-12: ${formatValue(scoreItem12, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item13") && <div>
-                                        {`Item-13: ${formatValue(scoreItem13, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item14") && <div>
-                                        {`Item-14: ${formatValue(scoreItem14, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item15") && <div>
-                                        {`Item-15: ${formatValue(scoreItem15, { decimalPlace: 2 })}`}
-                                    </div>}
+                                    {!excludedItems.includes("item1") && (
+                                        <div>
+                                            {`Item-1: ${formatValue(scoreItem1, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item2") && (
+                                        <div>
+                                            {`Item-2: ${formatValue(scoreItem2, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item3") && (
+                                        <div>
+                                            {`Item-3: ${formatValue(scoreItem3, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item4") && (
+                                        <div>
+                                            {`Item-4: ${formatValue(scoreItem4, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item5") && (
+                                        <div>
+                                            {`Item-5: ${formatValue(scoreItem5, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item6") && (
+                                        <div>
+                                            {`Item-6: ${formatValue(scoreItem6, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item7") && (
+                                        <div>
+                                            {`Item-7: ${formatValue(scoreItem7, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item8") && (
+                                        <div>
+                                            {`Item-8: ${formatValue(scoreItem8, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item9") && (
+                                        <div>
+                                            {`Item-9: ${formatValue(scoreItem9, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item10") && (
+                                        <div>
+                                            {`Item-10: ${formatValue(scoreItem10, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item11") && (
+                                        <div>
+                                            {`Item-11: ${formatValue(scoreItem11, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item12") && (
+                                        <div>
+                                            {`Item-12: ${formatValue(scoreItem12, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item13") && (
+                                        <div>
+                                            {`Item-13: ${formatValue(scoreItem13, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item14") && (
+                                        <div>
+                                            {`Item-14: ${formatValue(scoreItem14, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item15") && (
+                                        <div>
+                                            {`Item-15: ${formatValue(scoreItem15, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
                                     <h1>Cálculo Resultado Final:</h1>
                                     <div>
                                         {`(${[
-                                            !excludedItems.includes("item1") && `${formatValue(scoreItem1, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item2") && `${formatValue(scoreItem2, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item3") && `${formatValue(scoreItem3, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item4") && `${formatValue(scoreItem4, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item5") && `${formatValue(scoreItem5, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item6") && `${formatValue(scoreItem6, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item7") && `${formatValue(scoreItem7, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item8") && `${formatValue(scoreItem8, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item9") && `${formatValue(scoreItem9, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item10") && `${formatValue(scoreItem10, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item11") && `${formatValue(scoreItem11, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item12") && `${formatValue(scoreItem12, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item13") && `${formatValue(scoreItem13, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item14") && `${formatValue(scoreItem14, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item15") && `${formatValue(scoreItem15, { decimalPlace: 2 })}`,
-                                        ].filter(Boolean).join(' + ')}) / ${15 - excludedItems.length} = ${formatValue(finalResult, {
-                                            decimalPlace: 2,
-                                        })}`}
+                                            !excludedItems.includes("item1") &&
+                                            `${formatValue(scoreItem1, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item2") &&
+                                            `${formatValue(scoreItem2, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item3") &&
+                                            `${formatValue(scoreItem3, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item4") &&
+                                            `${formatValue(scoreItem4, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item5") &&
+                                            `${formatValue(scoreItem5, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item6") &&
+                                            `${formatValue(scoreItem6, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item7") &&
+                                            `${formatValue(scoreItem7, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item8") &&
+                                            `${formatValue(scoreItem8, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item9") &&
+                                            `${formatValue(scoreItem9, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item10") &&
+                                            `${formatValue(scoreItem10, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item11") &&
+                                            `${formatValue(scoreItem11, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item12") &&
+                                            `${formatValue(scoreItem12, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item13") &&
+                                            `${formatValue(scoreItem13, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item14") &&
+                                            `${formatValue(scoreItem14, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item15") &&
+                                            `${formatValue(scoreItem15, { decimalPlace: 2 })}`,
+                                        ]
+                                            .filter(Boolean)
+                                            .join(" + ")}) / ${15 - excludedItems.length
+                                            } = ${formatValue(finalResult, {
+                                                decimalPlace: 2,
+                                            })}`}
                                     </div>
 
-                                    <Button type="button" onClick={downloadPDF} className="no-print">
+                                    <Button
+                                        type="button"
+                                        onClick={downloadPDF}
+                                        className="no-print"
+                                    >
                                         Baixar PDF
                                     </Button>
                                 </>

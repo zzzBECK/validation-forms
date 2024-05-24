@@ -1,7 +1,7 @@
 import { formatValue } from "@/helpers/formatValue";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useReactToPrint } from "react-to-print";
 import { z } from "zod";
@@ -218,7 +218,9 @@ export function D1FirstModule({ state }: Props) {
         excludeItems: [],
     };
 
-    const savedFormData = JSON.parse(localStorage.getItem("d1m1") || "{}");
+    const savedFormData = useMemo(() => {
+        return JSON.parse(localStorage.getItem("d1m1") || "{}");
+    }, []);
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -241,7 +243,8 @@ export function D1FirstModule({ state }: Props) {
     }, [form, form.watch]);
 
     useEffect(() => {
-        const { item1, item2, item3, item4, item5, item6, item7, excludeItems } = savedFormData;
+        const { item1, item2, item3, item4, item5, item6, item7, excludeItems } =
+            savedFormData;
         setScoreItem1(calculateScore("item1", item1 || []));
         setScoreItem2(calculateScore("item2", item2 || []));
         setScoreItem3(calculateScore("item3", item3 || []));
@@ -308,7 +311,6 @@ export function D1FirstModule({ state }: Props) {
         };
     };
 
-
     const handleResetForm = () => {
         localStorage.removeItem("d1m1");
         form.reset(initialFormData);
@@ -333,7 +335,7 @@ export function D1FirstModule({ state }: Props) {
             !excludedItems.includes("item5") && scoreItem5,
             !excludedItems.includes("item6") && scoreItem6,
             !excludedItems.includes("item7") && scoreItem7,
-        ].filter(score => score !== false) as number[];
+        ].filter((score) => score !== false) as number[];
 
         setFinalResult(
             scores.reduce((sum, score) => sum + score, 0) / scores.length
@@ -342,13 +344,21 @@ export function D1FirstModule({ state }: Props) {
         setTimeout(() => {
             setIsLoading(false);
         }, 2000);
-    }, [excludedItems, scoreItem1, scoreItem2, scoreItem3, scoreItem4, scoreItem5, scoreItem6, scoreItem7, setIsLoading, setFinalResult]);
-
+    }, [
+        excludedItems,
+        scoreItem1,
+        scoreItem2,
+        scoreItem3,
+        scoreItem4,
+        scoreItem5,
+        scoreItem6,
+        scoreItem7,
+    ]);
 
     const downloadPDF = useReactToPrint({
         content: () => pdfRef.current,
         documentTitle: `Dimensão 1 - Categoria 1 - ${state}`,
-        onAfterPrint: () => alert('Download realizado com sucesso!')
+        onAfterPrint: () => alert("Download realizado com sucesso!"),
     });
 
     const handleExcludeChange = (itemName: keyof FormData) => {
@@ -362,13 +372,15 @@ export function D1FirstModule({ state }: Props) {
             }
 
             setExcludedItems(newExcludeItems);
-            form.setValue('excludeItems', newExcludeItems);
-
-            if (finalResult !== 0) {
-                onSubmit();
-            }
+            form.setValue("excludeItems", newExcludeItems);
         };
     };
+
+    useEffect(() => {
+        if (finalResult !== 0) {
+            onSubmit();
+        }
+    }, [excludedItems, finalResult, onSubmit]);
 
     return (
         <Card ref={pdfRef}>
@@ -386,7 +398,7 @@ export function D1FirstModule({ state }: Props) {
                     >
                         {Object.keys(items).map((itemName) => (
                             <FormField
-                                key={items[itemName].title}
+                                key={items[itemName].data[0]}
                                 control={form.control}
                                 name={itemName as keyof FormData}
                                 render={({ field }) => (
@@ -418,33 +430,35 @@ export function D1FirstModule({ state }: Props) {
                                             <label className="flex items-center space-x-2">
                                                 <Checkbox
                                                     checked={excludedItems.includes(itemName)}
-                                                    onCheckedChange={handleExcludeChange(itemName as keyof FormData)}
+                                                    onCheckedChange={handleExcludeChange(
+                                                        itemName as keyof FormData
+                                                    )}
                                                 />
                                                 <span>Desconsiderar</span>
                                             </label>
                                         </div>
                                         <FormControl>
                                             <div className="flex flex-col gap-2">
-                                                {items[itemName].data.map(
-                                                    (value, idx) => (
-                                                        <label
-                                                            key={idx}
-                                                            className={`flex items-center space-x-2 ${excludedItems.includes(itemName) ? 'opacity-50' : ''
-                                                                }`}
-                                                        >
-                                                            <Checkbox
-                                                                checked={field.value.includes(value)}
-                                                                onCheckedChange={handleCheckboxChange(
-                                                                    field,
-                                                                    itemName as keyof FormData,
-                                                                    value
-                                                                )}
-                                                                disabled={excludedItems.includes(itemName)}
-                                                            />
-                                                            <span>{value}</span>
-                                                        </label>
-                                                    )
-                                                )}
+                                                {items[itemName].data.map((value, idx) => (
+                                                    <label
+                                                        key={idx}
+                                                        className={`flex items-center space-x-2 ${excludedItems.includes(itemName)
+                                                                ? "opacity-50"
+                                                                : ""
+                                                            }`}
+                                                    >
+                                                        <Checkbox
+                                                            checked={field.value.includes(value)}
+                                                            onCheckedChange={handleCheckboxChange(
+                                                                field,
+                                                                itemName as keyof FormData,
+                                                                value
+                                                            )}
+                                                            disabled={excludedItems.includes(itemName)}
+                                                        />
+                                                        <span>{value}</span>
+                                                    </label>
+                                                ))}
                                             </div>
                                         </FormControl>
                                         <Separator />
@@ -459,7 +473,9 @@ export function D1FirstModule({ state }: Props) {
                                 Calculando
                             </Button>
                         ) : (
-                            <Button type="submit" className="no-print">Calcular</Button>
+                            <Button type="submit" className="no-print">
+                                Calcular
+                            </Button>
                         )}
                         {isLoading ? (
                             <div className="flex flex-col gap-4">
@@ -471,42 +487,84 @@ export function D1FirstModule({ state }: Props) {
                         ) : (
                             finalResult !== 0 && (
                                 <>
-                                    {!excludedItems.includes("item1") && <div>
-                                        {`Item-1: ${formatValue(scoreItem1, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item2") && <div>
-                                        {`Item-2: ${formatValue(scoreItem2, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item3") && <div>
-                                        {`Item-3: ${formatValue(scoreItem3, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item4") && <div>
-                                        {`Item-4: ${formatValue(scoreItem4, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item5") && <div>
-                                        {`Item-5: ${formatValue(scoreItem5, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item6") && <div>
-                                        {`Item-6: ${formatValue(scoreItem6, { decimalPlace: 2 })}`}
-                                    </div>}
-                                    {!excludedItems.includes("item7") && <div>
-                                        {`Item-7: ${formatValue(scoreItem7, { decimalPlace: 2 })}`}
-                                    </div>}
+                                    {!excludedItems.includes("item1") && (
+                                        <div>
+                                            {`Item-1: ${formatValue(scoreItem1, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item2") && (
+                                        <div>
+                                            {`Item-2: ${formatValue(scoreItem2, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item3") && (
+                                        <div>
+                                            {`Item-3: ${formatValue(scoreItem3, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item4") && (
+                                        <div>
+                                            {`Item-4: ${formatValue(scoreItem4, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item5") && (
+                                        <div>
+                                            {`Item-5: ${formatValue(scoreItem5, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item6") && (
+                                        <div>
+                                            {`Item-6: ${formatValue(scoreItem6, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
+                                    {!excludedItems.includes("item7") && (
+                                        <div>
+                                            {`Item-7: ${formatValue(scoreItem7, {
+                                                decimalPlace: 2,
+                                            })}`}
+                                        </div>
+                                    )}
                                     <h1>Cálculo Resultado Final:</h1>
                                     <div>
                                         {`(${[
-                                            !excludedItems.includes("item1") && `${formatValue(scoreItem1, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item2") && `${formatValue(scoreItem2, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item3") && `${formatValue(scoreItem3, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item4") && `${formatValue(scoreItem4, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item5") && `${formatValue(scoreItem5, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item6") && `${formatValue(scoreItem6, { decimalPlace: 2 })}`,
-                                            !excludedItems.includes("item7") && `${formatValue(scoreItem7, { decimalPlace: 2 })}`,
-                                        ].filter(Boolean).join(' + ')}) / ${7 - excludedItems.length} = ${formatValue(finalResult, {
-                                            decimalPlace: 2,
-                                        })}`}
+                                            !excludedItems.includes("item1") &&
+                                            `${formatValue(scoreItem1, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item2") &&
+                                            `${formatValue(scoreItem2, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item3") &&
+                                            `${formatValue(scoreItem3, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item4") &&
+                                            `${formatValue(scoreItem4, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item5") &&
+                                            `${formatValue(scoreItem5, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item6") &&
+                                            `${formatValue(scoreItem6, { decimalPlace: 2 })}`,
+                                            !excludedItems.includes("item7") &&
+                                            `${formatValue(scoreItem7, { decimalPlace: 2 })}`,
+                                        ]
+                                            .filter(Boolean)
+                                            .join(" + ")}) / ${7 - excludedItems.length
+                                            } = ${formatValue(finalResult, {
+                                                decimalPlace: 2,
+                                            })}`}
                                     </div>
-                                    <Button type="button" onClick={downloadPDF} className="no-print">
+                                    <Button
+                                        type="button"
+                                        onClick={downloadPDF}
+                                        className="no-print"
+                                    >
                                         Baixar PDF
                                     </Button>
                                 </>
