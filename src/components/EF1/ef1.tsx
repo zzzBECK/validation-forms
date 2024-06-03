@@ -22,66 +22,66 @@ import { Input } from "../ui/input";
 
 const formSchema = z.object({
     item1: z.array(z.string()),
-    item1Percent: z.number().min(0).max(100).optional(),
     item2: z.array(z.string()),
     item3: z.array(z.string()),
     item4: z.array(z.string()),
     item5: z.array(z.string()),
+    item1Percent: z.number().min(0).max(100).optional(),
     excludeItems: z.array(z.string()),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-const items: Record<keyof Omit<FormData, "excludeItems" | "item1Percent">, { title: string; data: string[] }> = {
+const items: Record<keyof Omit<FormData, "excludeItems" | "item1Percent">, { title: string; data: { id: number, text: string }[] }> = {
     item1: {
         title: "Organização da oferta",
         data: [
-            "1.1- Alcance da formação",
-            "1.2- Participação de outros profissionais",
-            "1.3- Mapeamento sobre perfil e condições de acesso",
-            "1.4- Período de realização da formação",
-            "1.5- Disponibilidade de materiais para atividades",
-            "1.6- Previsibilidade de materiais para cursistas com deficiências",
-            "1.7- Previsibilidade de estratégias para cursistas sem acesso à internet",
+            { id: 1.1, text: "1.1- Alcance da formação" },
+            { id: 1.2, text: "1.2- Participação de outros profissionais" },
+            { id: 1.3, text: "1.3- Mapeamento sobre perfil e condições de acesso" },
+            { id: 1.4, text: "1.4- Período de realização da formação" },
+            { id: 1.5, text: "1.5- Disponibilidade de materiais para atividades" },
+            { id: 1.6, text: "1.6- Previsibilidade de materiais para cursistas com deficiências" },
+            { id: 1.7, text: "1.7- Previsibilidade de estratégias para cursistas sem acesso à internet" },
         ],
     },
     item2: {
         title: "Organização da carga horária e regularidade das atividades formativas",
         data: [
-            "2.1- Carga horária total mínima",
-            "2.2- Atende à carga horária mínima presencial",
-            "2.3- Equivalência entre carga horária on-line e presencial",
-            "2.4- Carga horária distribuída e mensurada",
-            "2.5- Regularidade das atividades formativas",
-            "2.6- Regularidade dos encontros presenciais",
-            "2.7- Regularidade dos encontros síncronos",
+            { id: 2.1, text: "2.1- Carga horária total mínima" },
+            { id: 2.2, text: "2.2- Atende à carga horária mínima presencial" },
+            { id: 2.3, text: "2.3- Equivalência entre carga horária on-line e presencial" },
+            { id: 2.4, text: "2.4- Carga horária distribuída e mensurada" },
+            { id: 2.5, text: "2.5- Regularidade das atividades formativas" },
+            { id: 2.6, text: "2.6- Regularidade dos encontros presenciais" },
+            { id: 2.7, text: "2.7- Regularidade dos encontros síncronos" },
         ],
     },
     item3: {
         title: "Organização do trabalho pedagógico",
         data: [
-            "3.1- Diversidade e dinamicidade de estratégias formativas",
-            "3.2- Metodologia possibilita o trabalho coletivo",
-            "3.3- Estratégias propiciam desenvolvimento responsivo das cursistas",
-            "3.4- Flexibilidade para reorganização e replanejamento",
-            "3.5- Estratégias para conter/combater a evasão",
+            { id: 3.1, text: "3.1- Diversidade e dinamicidade de estratégias formativas" },
+            { id: 3.2, text: "3.2- Metodologia possibilita o trabalho coletivo" },
+            { id: 3.3, text: "3.3- Estratégias propiciam desenvolvimento responsivo das cursistas" },
+            { id: 3.4, text: "3.4- Flexibilidade para reorganização e replanejamento" },
+            { id: 3.5, text: "3.5- Estratégias para conter/combater a evasão" },
         ],
     },
     item4: {
         title: "Organização dos processos avaliativos",
         data: [
-            "4.1- Especificação sobre formas de avaliação e certificação",
-            "4.2- Estratégias avaliativas coadunam com avaliação processual",
-            "4.3- Avaliativos internos consideram feedbacks",
-            "4.4- Registros e sistematização do percurso",
+            { id: 4.1, text: "4.1- Especificação sobre formas de avaliação e certificação" },
+            { id: 4.2, text: "4.2- Estratégias avaliativas coadunam com avaliação processual" },
+            { id: 4.3, text: "4.3- Avaliativos internos consideram feedbacks" },
+            { id: 4.4, text: "4.4- Registros e sistematização do percurso" },
         ],
     },
     item5: {
         title: "Organização do roteiro de formação",
         data: [
-            "5.1- Quantidade e qualidade das informações do roteiro",
-            "5.2- Coerência entre planejamento e execução prática",
-            "5.3- Coerência entre objetivos, metodologia, materiais e conteúdo",
+            { id: 5.1, text: "5.1- Quantidade e qualidade das informações do roteiro" },
+            { id: 5.2, text: "5.2- Coerência entre planejamento e execução prática" },
+            { id: 5.3, text: "5.3- Coerência entre objetivos, metodologia, materiais e conteúdo" },
         ],
     },
 };
@@ -92,15 +92,29 @@ const calculateScore = (
     percent?: number
 ): number => {
     let score: number;
+    let subItem1: number;
+    let subItem2: number;
+    let subItem3: number;
+    let subItem4: number;
+    let subItem5: number;
+    let subItem6: number;
+    let subItem7: number;
     switch (itemName) {
         case "item1": {
-            score = 0;
+            subItem1 = 0;
+            subItem2 = 0;
+            subItem3 = 0;
+            subItem4 = 0;
+            subItem5 = 0;
+            subItem6 = 0;
+            subItem7 = 0;
             if (percent !== undefined) {
-                if (percent >= 100) score = 1;
-                else if (percent >= 90) score = 0.75;
-                else if (percent >= 80) score = 0.5;
-                else score = 0;
+                if (percent >= 100) subItem1 = 1;
+                else if (percent >= 90) subItem1 = 0.75;
+                else if (percent >= 80) subItem1 = 0.5;
             }
+            score = (subItem1 + subItem2 + subItem3 + subItem4 + subItem5 + subItem6 + subItem7) / 7;
+
             return score;
         }
         case "item2":
@@ -193,12 +207,12 @@ export function EF1({ state }: Props) {
     const handleCheckboxChange = (
         field: { value: string[]; onChange: (value: string[]) => void },
         itemName: keyof FormData,
-        value: string
+        value: { id: number; text: string }
     ) => {
         return (checked: boolean) => {
             const newValue = checked
-                ? [...field.value, value]
-                : field.value.filter((v) => v !== value);
+                ? [...field.value, value.text]
+                : field.value.filter((v) => v !== value.text);
 
             field.onChange(newValue);
 
@@ -357,9 +371,9 @@ export function EF1({ state }: Props) {
                                                             : ""
                                                             }`}
                                                     >
-                                                        {value === "1.1- Alcance da formação" ? (
+                                                        {value.text === "1.1- Alcance da formação" ? (
                                                             <>
-                                                                <span>{value}</span>
+                                                                <span>{value.text}</span>
                                                                 <Controller
                                                                     name="item1Percent"
                                                                     control={form.control}
@@ -381,7 +395,7 @@ export function EF1({ state }: Props) {
                                                         ) : (
                                                             <>
                                                                 <Checkbox
-                                                                    checked={field.value.includes(value)}
+                                                                    checked={field.value ? field.value.toString().includes(value.text) : false}
                                                                     onCheckedChange={handleCheckboxChange(
                                                                         field,
                                                                         itemName as keyof FormData,
@@ -389,7 +403,7 @@ export function EF1({ state }: Props) {
                                                                     )}
                                                                     disabled={excludedItems.includes(itemName)}
                                                                 />
-                                                                <span>{value}</span>
+                                                                <span>{value.text}</span>
                                                             </>
                                                         )}
                                                     </label>
