@@ -71,7 +71,7 @@ const items: Record<string, { title: string; data: string[] }> = {
         title: "Cronograma de atividades assíncronas",
         data: [
             "4.1- Semanal",
-            "4.2- 0Quinzenal",
+            "4.2- Quinzenal",
             "4.3- Mensal",
             "4.4- Semestral",
             "4.5– Não há previsão de atividades assíncronas",
@@ -619,8 +619,8 @@ export function D1SecondModule({ state }: Props) {
                                                     <label
                                                         key={idx}
                                                         className={`flex items-center space-x-2 ${excludedItems.includes(itemName)
-                                                                ? "opacity-50"
-                                                                : ""
+                                                            ? "opacity-50"
+                                                            : ""
                                                             }`}
                                                     >
                                                         <Checkbox
