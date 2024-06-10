@@ -2,7 +2,7 @@ import { formatValue } from "@/helpers/formatValue";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useReactToPrint } from "react-to-print";
 import { z } from "zod";
 import { Button } from "../ui/button";
@@ -16,9 +16,9 @@ import {
     FormLabel,
     FormMessage,
 } from "../ui/form";
+import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Skeleton } from "../ui/skeleton";
-import { Input } from "../ui/input";
 
 const formSchema = z.object({
     item1: z.array(z.string()),
@@ -662,9 +662,9 @@ export function EF1({ state }: Props) {
                                                             ) : (
                                                                 <>
                                                                     <Checkbox
-                                                                        checked={field.value ? field.value.includes(value.id) : false}
+                                                                        checked={field.value ? (field.value as string[]).includes(value.id.toString()) : false}
                                                                         onCheckedChange={handleCheckboxChange(
-                                                                            field,
+                                                                            field as { value: string[]; onChange: (value: string[]) => void },
                                                                             itemName as keyof FormData,
                                                                             value
                                                                         )}
