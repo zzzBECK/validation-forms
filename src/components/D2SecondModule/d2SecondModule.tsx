@@ -665,7 +665,7 @@ export function D2SecondModule({ state }: Props) {
   return (
     <Card ref={pdfRef}>
       <CardHeader className="flex flex-col md:flex-row justify-between md:items-center">
-        <h1 className="flex w-fit text-5xl md:text-6xl">{state}</h1>
+        <h1 className="flex w-fit text-2xl md:text-3xl font-bold">{`Dimensão 2 - Categoria 2 - ${state}`}</h1>
         <div className="w-fit md:mt-0 no-print">
           <Button onClick={handleResetForm}>Limpar formulário</Button>
         </div>
