@@ -101,9 +101,9 @@ const items: Record<string, { title: string; data: string[] }> = {
       "5.6- Apresenta revisão teórica e pesquisas anteriores relacionadas ao tema",
       "5.7- Inclui debates e tendências na área",
       "5.8- Apresenta evidências ou pesquisas que subsidiam as teorias e/ou conceitos abordados",
-      "5.8- Apresenta pesquisas sobre a alfabetização na perspectiva do letramento no contexto inclusivo, no âmbito da: Educação Especial",
-      "5.9- Apresenta pesquisas sobre a alfabetização na perspectiva do letramento no contexto inclusivo, no âmbito da: Educação do Campo",
-      "5.10- Apresenta pesquisas sobre a alfabetização na perspectiva do letramento no contexto inclusivo, no âmbito da: Educação Indígena",
+      "5.9- Apresenta pesquisas sobre a alfabetização na perspectiva do letramento no contexto inclusivo, no âmbito da: Educação Especial",
+      "5.10- Apresenta pesquisas sobre a alfabetização na perspectiva do letramento no contexto inclusivo, no âmbito da: Educação do Campo",
+      "5.11- Apresenta pesquisas sobre a alfabetização na perspectiva do letramento no contexto inclusivo, no âmbito da: Educação Indígena",
     ],
   },
   item6: {
@@ -269,8 +269,8 @@ const calculateScore = (
       if (selectedOptions.length === 0) return 0;
       if (selectedOptions.length <= 3) return 0.25;
       if (selectedOptions.length <= 6) return 0.5;
-      if (selectedOptions.length < 10) return 0.75;
-      if (selectedOptions.length >= 10) return 1;
+      if (selectedOptions.length < 11) return 0.75;
+      if (selectedOptions.length >= 11) return 1;
       return 0;
     case "item6":
       if (selectedOptions.length === 0) return 0;
