@@ -270,18 +270,18 @@ const calculateScore = (
       if (selectedOptions.length <= 3) return 0.25;
       if (selectedOptions.length <= 6) return 0.5;
       if (selectedOptions.length < 10) return 0.75;
-      if (selectedOptions.length === 10) return 1;
+      if (selectedOptions.length >= 10) return 1;
       return 0;
     case "item6":
       if (selectedOptions.length === 0) return 0;
       if (selectedOptions.length === 2) return 0.75;
+      if (selectedOptions.length === 3) return 1;
       if (
         selectedOptions.includes(
           "6.1- Premissas epistemológicas do processo de alfabetização do CNCA"
         )
       )
         return 0.5;
-      if (selectedOptions.length === 3) return 1;
       return 0;
     case "item7":
       if (selectedOptions.length === 0) return 0;
@@ -338,7 +338,7 @@ const calculateScore = (
       if (selectedOptions.length === 0) return 0;
       if (selectedOptions.length === 1) return 0.25;
       if (selectedOptions.length <= 5) return 0.5;
-      if (selectedOptions.length < 9) return 0.75;
+      if (selectedOptions.length <= 11) return 0.75;
       if (selectedOptions.length === 12) return 1;
       return 0;
     case "item16":
