@@ -248,10 +248,9 @@ const calculateScore = (
       return 0;
     case "item5":
       if (selectedOptions.length === 0) return 0;
-      if (selectedOptions.length === 1) return 0.25;
-      if (selectedOptions.length === 2) return 0.5;
-      if (selectedOptions.length === 3) return 0.75;
-      if (selectedOptions.length === 4) return 1;
+      if (selectedOptions.length === 1) return 0.5;
+      if (selectedOptions.length === 2) return 0.75;
+      if (selectedOptions.length === 3) return 1;
       return 0;
     case "item6":
       if (selectedOptions.length === 0) return 0;
